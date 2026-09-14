@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="CNC HUB OS Matang - sistem latihan CNC milling bergerbang untuk Kolej Vokasional Matang.">
+<title>CNC HUB OS Matang</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+:root{
+  --ground:#EDEAE3; --surface:#FAF8F4; --surface-2:#E4E0D6; --sunk:#DED9CD;
+  --ink:#15171A; --ink-2:#4B5057; --ink-3:#7C828A;
+  --rule:#CEC8BB; --rule-soft:#DFDACE;
+  --accent:#8F580C; --accent-bright:#C0820D; --accent-wash:#F2E7CF;
+  --go:#2A6A49; --go-wash:#DFEBE2;
+  --stop:#A2332A; --stop-wash:#F3DFDC;
+  --panel:#22262C; --panel-2:#2E343B; --panel-ink:#EAE7E0; --panel-rule:#40474F;
+  --shadow:0 1px 0 rgba(0,0,0,.05), 0 6px 18px -12px rgba(0,0,0,.35);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#121518; --surface:#1A1E23; --surface-2:#232830; --sunk:#0E1114;
+    --ink:#E9E7E2; --ink-2:#AAB0B7; --ink-3:#7E858D;
+    --rule:#333A42; --rule-soft:#272D34;
+    --accent:#D89A2E; --accent-bright:#EBB047; --accent-wash:#33291431;
+    --go:#54AC7C; --go-wash:#17301f;
+    --stop:#DC6155; --stop-wash:#331916;
+    --panel:#0D1013; --panel-2:#171B20; --panel-ink:#EAE7E0; --panel-rule:#2C333B;
+    --shadow:0 1px 0 rgba(0,0,0,.4), 0 8px 22px -14px rgba(0,0,0,.9);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#121518; --surface:#1A1E23; --surface-2:#232830; --sunk:#0E1114;
+  --ink:#E9E7E2; --ink-2:#AAB0B7; --ink-3:#7E858D;
+  --rule:#333A42; --rule-soft:#272D34;
+  --accent:#D89A2E; --accent-bright:#EBB047; --accent-wash:#33291431;
+  --go:#54AC7C; --go-wash:#17301f;
+  --stop:#DC6155; --stop-wash:#331916;
+  --panel:#0D1013; --panel-2:#171B20; --panel-ink:#EAE7E0; --panel-rule:#2C333B;
+  --shadow:0 1px 0 rgba(0,0,0,.4), 0 8px 22px -14px rgba(0,0,0,.9);
+}
+
+*{box-sizing:border-box}
+body{
+  background:var(--ground); color:var(--ink);
+  font-family:"Archivo","Helvetica Neue",Arial,sans-serif;
+  font-size:15px; line-height:1.5; margin:0;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1180px; margin:0 auto; padding:0 22px 90px}
+h1,h2,h3,h4{margin:0; text-wrap:balance; font-weight:700; letter-spacing:-.011em}
+p{margin:0}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent-bright); outline-offset:2px; border-radius:3px}
+
+.eyebrow{
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:10.5px; font-weight:600;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3);
+}
+.serif{font-family:"Source Serif 4",Georgia,serif; font-size:15.5px; line-height:1.62; color:var(--ink-2)}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+
+/* ---------- masthead ---------- */
+.mast{border-bottom:1px solid var(--rule); background:var(--surface); margin-bottom:0}
+.mast-in{max-width:1180px; margin:0 auto; padding:26px 22px 22px; display:flex; flex-wrap:wrap; gap:26px; align-items:flex-end; justify-content:space-between}
+.mast h1{font-size:clamp(28px,4vw,42px); line-height:1.02; letter-spacing:-.028em}
+.mast h1 .dim{color:var(--ink-3); font-weight:500}
+.mast .sub{margin-top:9px; max-width:56ch; color:var(--ink-2); font-size:14.5px}
+.stamp{
+  font-family:"IBM Plex Mono",monospace; font-size:10.5px; line-height:1.7; color:var(--ink-3);
+  border-left:2px solid var(--accent); padding-left:11px; text-transform:uppercase; letter-spacing:.08em;
+}
+
+/* hazard strip — the one flourish, and it means something */
+.hazard{height:7px; background:repeating-linear-gradient(-45deg,var(--accent-bright) 0 11px, transparent 11px 22px), var(--panel)}
+
+/* ---------- notice ---------- */
+.notice{
+  display:flex; gap:13px; align-items:flex-start; margin:22px 0 0;
+  border:1px solid var(--rule); border-left:3px solid var(--stop);
+  background:var(--surface); padding:14px 16px; box-shadow:var(--shadow);
+}
+.notice .t{font-size:13.5px; font-weight:700; margin-bottom:3px}
+.notice .b{font-size:13.5px; color:var(--ink-2); max-width:88ch}
+.badge-verify{
+  display:inline-block; font-family:"IBM Plex Mono",monospace; font-size:9.5px; font-weight:600;
+  letter-spacing:.09em; text-transform:uppercase; color:var(--stop);
+  border:1px solid var(--stop); border-radius:2px; padding:1px 5px; vertical-align:2px; white-space:nowrap;
+}
+
+/* ---------- section frame ---------- */
+section{margin-top:52px}
+.shead{display:flex; align-items:baseline; gap:14px; border-bottom:1px solid var(--ink); padding-bottom:8px; margin-bottom:20px}
+.shead .n{font-family:"IBM Plex Mono",monospace; font-size:12px; font-weight:600; color:var(--accent)}
+.shead h2{font-size:20px; letter-spacing:-.018em}
+.shead .note{margin-left:auto; font-size:12px; color:var(--ink-3)}
+
+/* ---------- ladder ---------- */
+.ladder{display:grid; grid-template-columns:repeat(7,1fr); gap:0; border:1px solid var(--rule); background:var(--surface)}
+.rung{
+  border-right:1px solid var(--rule-soft); padding:13px 12px 15px; cursor:pointer; background:none;
+  text-align:left; font:inherit; color:inherit; display:block; position:relative;
+}
+.rung:last-child{border-right:0}
+.rung .lv{font-family:"IBM Plex Mono",monospace; font-size:11px; font-weight:600; color:var(--ink-3); letter-spacing:.06em}
+.rung .nm{font-size:13.5px; font-weight:600; margin-top:5px; line-height:1.25}
+.rung .bar{height:3px; margin-top:11px; background:var(--sunk)}
+.rung .bar i{display:block; height:100%; background:var(--accent-bright)}
+.rung[aria-selected="true"]{background:var(--accent-wash)}
+.rung[aria-selected="true"] .lv{color:var(--accent)}
+.rung:hover{background:var(--surface-2)}
+.rung[aria-selected="true"]:hover{background:var(--accent-wash)}
+.ladder-detail{border:1px solid var(--rule); border-top:0; background:var(--surface); padding:18px 20px; display:grid; grid-template-columns:1.25fr 1fr; gap:26px}
+.ld-h{font-size:16px; margin-bottom:7px}
+.ld-list{margin:8px 0 0; padding-left:17px}
+.ld-list li{margin-bottom:5px; font-size:14px; color:var(--ink-2)}
+.evidence{background:var(--sunk); border-left:2px solid var(--go); padding:12px 14px}
+.evidence .eyebrow{color:var(--go)}
+.evidence p{font-size:13.5px; color:var(--ink-2); margin-top:6px}
+
+/* ---------- phase spine ---------- */
+.spine{display:grid; grid-template-columns:250px 1fr; gap:0; border:1px solid var(--rule); background:var(--surface)}
+.rail{border-right:1px solid var(--rule); background:var(--surface-2)}
+.railhead{padding:12px 15px; border-bottom:1px solid var(--rule); display:flex; justify-content:space-between; align-items:center}
+.railhead .cnt{font-family:"IBM Plex Mono",monospace; font-size:11px; font-weight:600; color:var(--accent)}
+.rail button{
+  width:100%; display:flex; gap:10px; align-items:flex-start; text-align:left; font:inherit; color:inherit;
+  background:none; border:0; border-bottom:1px solid var(--rule-soft); padding:11px 14px; cursor:pointer;
+}
+.rail button:hover{background:var(--sunk)}
+.rail button[aria-current="true"]{background:var(--surface); box-shadow:inset 3px 0 0 var(--accent)}
+.rail .dot{width:9px; height:9px; border-radius:50%; border:1.5px solid var(--ink-3); margin-top:5px; flex:none; background:transparent}
+.rail button.pass .dot{background:var(--go); border-color:var(--go)}
+.rail .fc{display:block; font-family:"IBM Plex Mono",monospace; font-size:10px; color:var(--ink-3); letter-spacing:.08em}
+.rail .fn{display:block; font-size:13.5px; font-weight:600; line-height:1.25; margin-top:2px}
+.rail button.pass .fn{color:var(--ink-2)}
+
+.stage{padding:22px 24px 26px; min-width:0}
+.stage-top{display:flex; gap:16px; align-items:flex-start; flex-wrap:wrap; margin-bottom:4px}
+.stage h3{font-size:23px; letter-spacing:-.02em}
+.stage .meta{margin-left:auto; text-align:right}
+.stage .why{margin-top:12px; max-width:70ch}
+.gatewarn{
+  display:flex; gap:9px; align-items:center; background:var(--stop-wash); border-left:3px solid var(--stop);
+  padding:9px 12px; margin-top:14px; font-size:13px; color:var(--ink)
+}
+
+.block{margin-top:24px}
+.block > .eyebrow{display:block; padding-bottom:6px; border-bottom:1px solid var(--rule-soft); margin-bottom:12px}
+
+/* keycaps — the machine's own vocabulary */
+.panelboard{background:var(--panel); border:1px solid var(--panel-rule); padding:15px 16px 17px}
+.step{display:flex; gap:13px; align-items:flex-start; padding:9px 0; border-top:1px solid var(--panel-rule)}
+.step:first-of-type{border-top:0; padding-top:2px}
+.step .sn{font-family:"IBM Plex Mono",monospace; font-size:10.5px; font-weight:600; color:var(--accent-bright); width:20px; flex:none; padding-top:6px}
+.step .sbody{min-width:0}
+.step .stx{font-size:13.5px; color:var(--panel-ink); margin-top:5px; line-height:1.45}
+.step .stx em{color:#B9C0C8; font-style:normal}
+.keys{display:flex; flex-wrap:wrap; gap:6px; align-items:center}
+kbd{
+  font-family:"IBM Plex Mono",monospace; font-size:11px; font-weight:600; letter-spacing:.05em;
+  text-transform:uppercase; color:#0d0f11; background:#CFCABE;
+  border:1px solid #6e6a61; border-bottom-width:3px; border-radius:3px; padding:5px 8px 4px; display:inline-block;
+}
+kbd.go{background:#3E9B67; color:#06180e; border-color:#1d5236}
+kbd.stop{background:#C4483C; color:#210806; border-color:#6d2019}
+kbd.mode{background:#2E343B; color:#EAE7E0; border-color:#575F68}
+kbd.soft{background:transparent; color:#B9C0C8; border-color:#4b535b; border-bottom-width:1px; text-transform:none; letter-spacing:.02em}
+.arrow{color:#666e77; font-size:12px}
+.gcode{font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--accent-bright); background:#000; border:1px solid var(--panel-rule); padding:2px 6px; display:inline-block}
+.panelboard .none{color:#8d959d; font-size:13.5px; font-family:"Source Serif 4",Georgia,serif}
+
+/* gate checklist */
+.gate{border:1px solid var(--rule); background:var(--sunk)}
+.gate-h{display:flex; align-items:center; gap:10px; padding:9px 13px; border-bottom:1px solid var(--rule); background:var(--surface-2)}
+.gate-h .eyebrow{color:var(--ink-2)}
+.gate-h .prog{margin-left:auto; font-family:"IBM Plex Mono",monospace; font-size:11px; font-weight:600; color:var(--ink-3)}
+.gate.done .gate-h{background:var(--go-wash)}
+.gate.done .gate-h .prog{color:var(--go)}
+.gate label{display:flex; gap:11px; align-items:flex-start; padding:9px 14px; border-bottom:1px solid var(--rule-soft); cursor:pointer; font-size:13.8px}
+.gate label:last-of-type{border-bottom:0}
+.gate label:hover{background:var(--surface)}
+.gate input{margin:2px 0 0; width:15px; height:15px; accent-color:var(--go); flex:none}
+.gate input:checked + span{color:var(--ink-3); text-decoration:line-through; text-decoration-thickness:1px}
+
+/* per-phase errors */
+.errs{display:grid; gap:9px}
+.err{display:grid; grid-template-columns:auto 1fr; gap:11px; border:1px solid var(--rule); border-left:3px solid var(--stop); background:var(--surface); padding:11px 13px}
+.err .ic{font-family:"IBM Plex Mono",monospace; font-size:11px; font-weight:600; color:var(--stop); padding-top:1px}
+.err .et{font-size:13.8px; font-weight:600}
+.err .ew{font-size:13.2px; color:var(--ink-2); margin-top:3px}
+.err .eg{font-size:13.2px; color:var(--ink-2); margin-top:5px; padding-top:5px; border-top:1px dotted var(--rule)}
+.err .eg b{color:var(--go); font-weight:600}
+
+.navrow{display:flex; gap:10px; margin-top:26px; padding-top:16px; border-top:1px solid var(--rule)}
+.navrow button{
+  font:inherit; font-size:13px; font-weight:600; padding:8px 15px; cursor:pointer;
+  background:var(--surface); color:var(--ink); border:1px solid var(--rule);
+}
+.navrow button:hover{border-color:var(--ink-3)}
+.navrow button.primary{background:var(--ink); color:var(--ground); border-color:var(--ink)}
+.navrow button:disabled{opacity:.35; cursor:not-allowed}
+.navrow .sp{flex:1}
+
+/* ---------- calculator ---------- */
+.calc{display:grid; grid-template-columns:1fr 1fr; gap:0; border:1px solid var(--rule); background:var(--surface)}
+.calc-in{padding:18px 20px; border-right:1px solid var(--rule)}
+.calc-out{padding:18px 20px; background:var(--sunk)}
+.presets{display:flex; flex-wrap:wrap; gap:6px; margin:10px 0 18px}
+.presets button{
+  font-family:"IBM Plex Mono",monospace; font-size:11px; font-weight:500; padding:5px 9px; cursor:pointer;
+  background:var(--surface-2); border:1px solid var(--rule); color:var(--ink-2);
+}
+.presets button[aria-pressed="true"]{background:var(--accent); border-color:var(--accent); color:var(--surface)}
+.fld{display:grid; grid-template-columns:1fr 96px; gap:10px; align-items:center; padding:7px 0; border-bottom:1px solid var(--rule-soft)}
+.fld:last-child{border-bottom:0}
+.fld .lb{font-size:13.4px}
+.fld .lb small{display:block; color:var(--ink-3); font-size:11.5px; font-family:"IBM Plex Mono",monospace}
+.fld input{
+  font-family:"IBM Plex Mono",monospace; font-size:13.5px; font-weight:500; text-align:right;
+  padding:6px 8px; width:100%; background:var(--surface); color:var(--ink); border:1px solid var(--rule);
+  font-variant-numeric:tabular-nums;
+}
+.res{display:flex; justify-content:space-between; align-items:baseline; gap:12px; padding:11px 0; border-bottom:1px solid var(--rule-soft)}
+.res .rl{font-size:13.4px; color:var(--ink-2)}
+.res .rl small{display:block; color:var(--ink-3); font-size:11.5px; font-family:"IBM Plex Mono",monospace}
+.res .rv{font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:21px; font-variant-numeric:tabular-nums; letter-spacing:-.02em; white-space:nowrap}
+.res .rv u{text-decoration:none; font-size:12px; font-weight:500; color:var(--ink-3); margin-left:4px}
+.flag{margin-top:14px; font-size:12.8px; padding:9px 11px; border-left:3px solid var(--accent); background:var(--accent-wash); color:var(--ink-2)}
+.flag.bad{border-left-color:var(--stop); background:var(--stop-wash)}
+.formula{font-family:"IBM Plex Mono",monospace; font-size:11.5px; color:var(--ink-3); margin-top:16px; line-height:1.9}
+
+/* ---------- rantai diagnosis ---------- */
+.symrow{display:flex; flex-wrap:wrap; gap:7px; margin-bottom:18px}
+.symrow button{
+  font:inherit; font-size:13px; font-weight:600; padding:8px 13px; cursor:pointer; text-align:left;
+  background:var(--surface); border:1px solid var(--rule); color:var(--ink-2);
+}
+.symrow button:hover{border-color:var(--ink-3); color:var(--ink)}
+.symrow button[aria-pressed="true"]{background:var(--ink); border-color:var(--ink); color:var(--ground)}
+.chain{display:grid; grid-template-columns:repeat(5,1fr); border:1px solid var(--rule); background:var(--surface)}
+.link{padding:14px 15px 16px; border-right:1px solid var(--rule-soft); min-width:0}
+.link:last-child{border-right:0}
+.link .st{font-family:"IBM Plex Mono",monospace; font-size:9.5px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3)}
+.link h4{font-size:13.5px; margin:7px 0 6px; line-height:1.28}
+.link p{font-size:12.9px; color:var(--ink-2); line-height:1.5}
+.link.mech{background:var(--sunk)}
+.link.mech .st{color:var(--accent)}
+.act{border:1px solid var(--rule); border-top:0; background:var(--go-wash); padding:14px 16px; display:grid; grid-template-columns:auto 1fr; gap:14px; align-items:start}
+.act .lbl{font-family:"IBM Plex Mono",monospace; font-size:9.5px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--go); padding-top:2px; white-space:nowrap}
+.act p{font-size:13.6px; color:var(--ink)}
+.disc{display:grid; grid-template-columns:repeat(auto-fit,minmax(232px,1fr)); gap:0; border:1px solid var(--rule); background:var(--surface); margin-top:22px}
+.disc div{padding:14px 16px; border-right:1px solid var(--rule-soft); border-bottom:1px solid var(--rule-soft)}
+.disc .q{font-family:"IBM Plex Mono",monospace; font-size:11.5px; color:var(--accent); line-height:1.5}
+.disc .t{font-size:13.4px; color:var(--ink-2); margin-top:8px; padding-top:8px; border-top:1px dotted var(--rule)}
+
+/* ---------- taxonomy table ---------- */
+.tablewrap{overflow-x:auto; border:1px solid var(--rule)}
+table{border-collapse:collapse; width:100%; min-width:760px; background:var(--surface)}
+th{
+  font-family:"IBM Plex Mono",monospace; font-size:10px; font-weight:600; letter-spacing:.11em; text-transform:uppercase;
+  color:var(--ink-3); text-align:left; padding:10px 13px; border-bottom:1px solid var(--ink); background:var(--surface-2); white-space:nowrap;
+}
+td{padding:11px 13px; border-bottom:1px solid var(--rule-soft); font-size:13.4px; vertical-align:top; color:var(--ink-2)}
+tr:last-child td{border-bottom:0}
+td.k{color:var(--ink); font-weight:600; width:23%}
+td.p{font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-3); width:44px}
+td.g b{color:var(--go); font-weight:600}
+.sev{font-family:"IBM Plex Mono",monospace; font-size:9.5px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; padding:2px 6px; border:1px solid; border-radius:2px; white-space:nowrap}
+.sev.c{color:var(--stop); border-color:var(--stop)}
+.sev.w{color:var(--accent); border-color:var(--accent)}
+.sev.l{color:var(--ink-3); border-color:var(--ink-3)}
+
+/* ---------- aliran sistem ---------- */
+.flow{display:grid; grid-template-columns:repeat(6,1fr); border:1px solid var(--rule); background:var(--surface)}
+.fstage{padding:14px 13px 15px; border-right:1px solid var(--rule-soft); min-width:0}
+.fstage:last-child{border-right:0}
+.fstage .fno{font-family:"IBM Plex Mono",monospace; font-size:9.5px; font-weight:600; letter-spacing:.1em; color:var(--accent)}
+.fstage .who{font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.09em; text-transform:uppercase; color:var(--ink-3); margin-top:8px}
+.fstage h4{font-size:14px; margin:3px 0 6px; line-height:1.25}
+.fstage p{font-size:12.6px; color:var(--ink-2); line-height:1.48}
+.fstage .frm{font-family:"IBM Plex Mono",monospace; font-size:10.5px; margin-top:10px; padding-top:8px; border-top:1px dotted var(--rule); color:var(--ink-2)}
+.fstage.gap{background:var(--stop-wash)}
+.fstage.gap .fno{color:var(--stop)}
+.fstage.gap .frm{color:var(--stop); font-weight:600}
+.hublab{display:flex; align-items:center; gap:10px; margin-top:0; padding:8px 13px; border:1px solid var(--rule); border-top:0; background:var(--surface-2)}
+.hubbar{display:grid; grid-template-columns:repeat(6,1fr); border:1px solid var(--rule); border-top:0}
+.hubcell{padding:10px 13px; border-right:1px solid var(--rule-soft); font-family:"IBM Plex Mono",monospace; font-size:11px; line-height:1.45; color:var(--ink-3)}
+.hubcell:last-child{border-right:0}
+.hubcell.on{background:var(--accent-wash); color:var(--accent); font-weight:600}
+
+.claim{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:0; border:1px solid var(--ink); background:var(--surface); margin-top:24px}
+.claim div{padding:16px 18px; border-right:1px solid var(--rule-soft)}
+.claim div:last-child{border-right:0}
+.claim .h{font-family:"IBM Plex Mono",monospace; font-size:9.5px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--accent)}
+.claim h4{font-size:15px; margin:7px 0 7px; line-height:1.3}
+.claim p{font-size:13.2px; color:var(--ink-2)}
+.warnbox{display:grid; grid-template-columns:auto 1fr; gap:14px; align-items:start; border:1px solid var(--stop); background:var(--stop-wash); padding:15px 17px; margin-top:22px}
+.warnbox .lbl{font-family:"IBM Plex Mono",monospace; font-size:9.5px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--stop); padding-top:3px; white-space:nowrap}
+.warnbox h4{font-size:14.5px; margin-bottom:5px}
+.warnbox p{font-size:13.4px; color:var(--ink-2); max-width:82ch}
+
+/* ---------- mapping ---------- */
+.map{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:0; border:1px solid var(--rule); background:var(--surface)}
+.mcell{padding:16px 18px; border-right:1px solid var(--rule-soft); border-bottom:1px solid var(--rule-soft)}
+.mcell .a{font-family:"IBM Plex Mono",monospace; font-size:11px; font-weight:600; color:var(--accent); letter-spacing:.06em}
+.mcell h4{font-size:14.5px; margin:5px 0 6px; line-height:1.3}
+.mcell p{font-size:13.2px; color:var(--ink-2)}
+.mcell .to{margin-top:9px; font-family:"IBM Plex Mono",monospace; font-size:10.5px; color:var(--ink-3); text-transform:uppercase; letter-spacing:.07em}
+.mcell.off{background:var(--sunk)}
+.mcell.off .a{color:var(--ink-3)}
+
+footer{margin-top:56px; padding-top:18px; border-top:1px solid var(--rule); color:var(--ink-3); font-size:12.5px; display:flex; gap:18px; flex-wrap:wrap}
+
+@media (max-width:940px){
+  .ladder{grid-template-columns:repeat(4,1fr)}
+  .flow, .hubbar{grid-template-columns:repeat(2,1fr)}
+  .fstage, .hubcell{border-bottom:1px solid var(--rule-soft)}
+  .chain{grid-template-columns:1fr}
+  .link{border-right:0; border-bottom:1px solid var(--rule-soft)}
+  .link:last-child{border-bottom:0}
+  .rung{border-bottom:1px solid var(--rule-soft)}
+  .ladder-detail{grid-template-columns:1fr}
+  .spine{grid-template-columns:1fr}
+  .rail{border-right:0; border-bottom:1px solid var(--rule); display:flex; overflow-x:auto}
+  .rail button{border-bottom:0; border-right:1px solid var(--rule-soft); min-width:168px}
+  .railhead{display:none}
+  .calc{grid-template-columns:1fr}
+  .calc-in{border-right:0; border-bottom:1px solid var(--rule)}
+}
+@media (max-width:560px){
+  .ladder{grid-template-columns:repeat(2,1fr)}
+  .stage{padding:18px 16px 22px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important; animation:none!important}}
+
+/* ---------- tambahan versi fail berdiri sendiri ---------- */
+:root{color-scheme:light}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){color-scheme:dark} }
+:root[data-theme="dark"]{color-scheme:dark}
+img{max-width:100%}
+[hidden]{display:none!important}
+
+.tools{display:flex; flex-wrap:wrap; gap:8px; margin-top:16px}
+.tools button{
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11px; font-weight:600;
+  letter-spacing:.06em; text-transform:uppercase; padding:6px 11px; cursor:pointer;
+  background:var(--surface-2); border:1px solid var(--rule); color:var(--ink-2);
+}
+.tools button:hover{border-color:var(--ink-3); color:var(--ink)}
+
+@media print{
+  @page{margin:14mm}
+  body{background:#fff; color:#000; font-size:11pt}
+  .hazard, .tools, .rail, .navrow, .presets, .symrow, .shead .note, footer{display:none !important}
+  .mast{background:#fff; border-bottom:1px solid #000}
+  .spine{grid-template-columns:1fr; border-color:#000}
+  .ladder{grid-template-columns:repeat(4,1fr)}
+  .chain{grid-template-columns:1fr}
+  .link{border-right:0; border-bottom:1px solid #ccc}
+  .link.mech, .act, .gate, .gate-h, .calc-out, .evidence, .disc div,
+  .fstage.gap, .warnbox, .hublab, .hubcell.on{background:#fff}
+  .flow, .hubbar{grid-template-columns:repeat(3,1fr)}
+  .fstage, .hubcell{border-bottom:1px solid #ccc}
+  .warnbox, .claim{border-color:#000}
+  section{break-inside:avoid; page-break-inside:avoid; margin-top:20px}
+  .panelboard{background:#fff; border:1px solid #000}
+  .panelboard .stx, .panelboard .stx em, .panelboard .none{color:#000}
+  .step{border-top-color:#bbb}
+  kbd{background:#fff; color:#000; border-color:#000; border-bottom-width:1px}
+  kbd.soft{color:#000}
+  .gcode{background:#fff; color:#000}
+  .gate label{border-bottom:1px solid #ccc}
+  .err, .notice{background:#fff; box-shadow:none}
+  a{color:#000; text-decoration:underline}
+}
+</style>
+</head>
+<body>
+<div class="hazard"></div>
+<div class="mast">
+  <div class="mast-in">
+    <div>
+      <div class="eyebrow" style="margin-bottom:9px">Kolej Vokasional Matang &nbsp;·&nbsp; CNC Milling 3-Axis</div>
+      <h1>CNC HUB OS <span class="dim">v1</span></h1>
+      <p class="sub">Satu laluan tetap dari tidak tahu apa-apa hingga boleh menyediakan mesin sendiri. Setiap fasa ada gerbang pemeriksaan yang mesti lulus sebelum fasa berikut — itulah yang menghalang kesilapan, bukan ingatan pelajar.</p>
+      <div class="tools">
+        <button type="button" id="themeBtn">Tema: Auto</button>
+        <button type="button" id="resetBtn">Reset semua gerbang</button>
+        <button type="button" id="printBtn">Cetak fasa ini</button>
+      </div>
+    </div>
+    <div class="stamp">Draf kerja<br>September 2026<br>Semakan: perlu manual mesin</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<div class="notice">
+  <div>
+    <div class="t">Kawalan disahkan FANUC 0i-MF Plus — panel pembuat mesin belum</div>
+    <div class="b">Job Card anda mengesahkan mesin ialah VMC CNC Milling dengan kawalan <strong>FANUC Series 0i-MF Plus</strong>, jadi kekunci skrin FANUC (<span class="mono" style="font-size:12px">POS · PROG · OFFSET SETTING</span> dan soft key) adalah betul. Yang masih bertanda <span class="badge-verify">Sahkan</span> ialah butang pada panel sebelah mesin — pemilih mod, cycle start, feed hold dan handwheel — kerana itu datang daripada pembuat mesin, bukan FANUC, dan berbeza antara jenama. Padankan dengan manual mesin sebelum diberi kepada pelajar.</div>
+  </div>
+</div>
+
+<section>
+  <div class="shead"><span class="n">01</span><h2>Di mana Hub OS duduk dalam aliran kerja bengkel</h2><span class="note">Tiga borang, enam peringkat</span></div>
+  <p class="serif" style="max-width:72ch; margin-bottom:18px">Aliran sedia ada KV Matang sudah betul strukturnya: pelajar mengisi Job Card, pensyarah menyemak dan meluluskan, pelajar mengesahkan melalui Pre-Run Checklist, barulah mesin dihidupkan. CNC Hub OS bukan borang keempat — ia lapisan yang membuat ketiga-tiga borang itu berfungsi, dengan memberi pelajar <em>cara memikirkan</em> apa yang mereka tulis dan tanda.</p>
+  <div class="flow">
+    <div class="fstage"><div class="fno">01</div><div class="who">Pelajar</div><h4>Sedia</h4><p>Baca lukisan, pilih tool, kira S dan F, tetapkan datum di atas kertas.</p><div class="frm">Borang 1 · Job Card</div></div>
+    <div class="fstage"><div class="fno">02</div><div class="who">Pensyarah</div><h4>Semak</h4><p>Sahkan parameter munasabah untuk bahan, datum jelas, senarai tool lengkap. Lulus atau pulangkan.</p><div class="frm">Borang 3 · Kelulusan</div></div>
+    <div class="fstage gap"><div class="fno">03</div><div class="who">Pelajar</div><h4>Setup mesin</h4><p>Homing, pasang bendakerja, tool length offset, work offset G54. Di sinilah kerja sebenar berlaku.</p><div class="frm">Tiada borang — jurang</div></div>
+    <div class="fstage"><div class="fno">04</div><div class="who">Pelajar</div><h4>Sahkan</h4><p>Machine lock, dry run, single block, rapid 25%. Semak laluan sebelum logam disentuh.</p><div class="frm">Borang 2 · Pre-Run</div></div>
+    <div class="fstage"><div class="fno">05</div><div class="who">Pelajar</div><h4>Potong</h4><p>Cycle start dengan feed override rendah, tangan di feed hold. Ukur bahagian pertama.</p><div class="frm">—</div></div>
+    <div class="fstage"><div class="fno">06</div><div class="who">Kedua-dua</div><h4>Rekod</h4><p>Keputusan, ukuran, masalah. Inilah yang menjadi data pembuktian inovasi.</p><div class="frm">Borang 1 · bahagian akhir</div></div>
+  </div>
+  <div class="hublab"><span class="eyebrow">CNC Hub OS aktif di peringkat mana</span></div>
+  <div class="hubbar">
+    <div class="hubcell on">F1 · kalkulator parameter, senarai persediaan</div>
+    <div class="hubcell on">Gerbang F1 · kriteria kelulusan yang sama untuk semua pensyarah</div>
+    <div class="hubcell on">F2–F5 · urutan butang panel, gerbang setiap fasa</div>
+    <div class="hubcell on">F6 · urutan pengesahan berperingkat</div>
+    <div class="hubcell on">F7 · first-off, wear offset</div>
+    <div class="hubcell">Rantai diagnosis bila keputusan tidak menjadi</div>
+  </div>
+
+  <div class="warnbox">
+    <span class="lbl">Penemuan</span>
+    <div>
+      <h4>Peringkat 03 tiada borang — dan di situlah empat daripada enam kesilapan kritikal berlaku</h4>
+      <p>Rujuk taksonomi di seksyen 05: Z sifar diambil di meja, nombor H tidak sepadan dengan T, homing X sebelum Z, dan bendakerja tidak diketatkan. Keempat-empatnya berlaku semasa setup mesin — satu-satunya peringkat yang tiada rekod, tiada semakan, dan tiada tandatangan. Pre-Run Checklist diisi selepas itu, jadi pelajar menanda "work offset betul" untuk kerja yang sudah pun selesai tanpa disaksikan sesiapa. Inilah lubang yang Hub OS tutup, dan inilah hujah paling kuat untuk penghantaran tajuk anda.</p>
+    </div>
+  </div>
+
+  <div class="claim">
+    <div><div class="h">Masalah</div><h4>Kesilapan bukan kerana pelajar tidak tahu</h4><p>Mereka tahu semasa di kelas, tetapi terlupa pada saat mesin sudah hidup dan rakan sedang menunggu giliran. Latihan tambahan tidak menyelesaikan masalah ingatan di bawah tekanan.</p></div>
+    <div><div class="h">Inovasi</div><h4>Pindahkan beban dari ingatan kepada prosedur bergerbang</h4><p>Setiap fasa ada gerbang yang mesti lulus sebelum fasa berikut, dan penjelasan "kenapa" muncul pada saat ia diperlukan — bukan tiga minggu lebih awal di dalam kelas teori.</p></div>
+    <div><div class="h">Kebaruan</div><h4>Bukan halaman web, tetapi susunan</h4><p>Job card dan checklist wujud di mana-mana. Yang baharu ialah gabungan gerbang berturutan, panduan butang khusus mesin pada titik guna, dan data borang yang menutup gelung sebagai bukti keberkesanan.</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="shead"><span class="n">02</span><h2>Tangga kompetensi L0–L6</h2><span class="note">Klik satu aras</span></div>
+  <div class="ladder" id="ladder" role="tablist" aria-label="Aras kompetensi"></div>
+  <div class="ladder-detail" id="ladderDetail"></div>
+</section>
+
+<section>
+  <div class="shead"><span class="n">03</span><h2>Jalan Selamat — tujuh fasa, tujuh gerbang</h2><span class="note">Urutan tidak boleh ditukar</span></div>
+  <div class="spine">
+    <nav class="rail" id="rail" aria-label="Fasa operasi">
+      <div class="railhead"><span class="eyebrow">Fasa</span><span class="cnt" id="gateCount">0/7 lulus</span></div>
+    </nav>
+    <div class="stage" id="stage"></div>
+  </div>
+</section>
+
+<section>
+  <div class="shead"><span class="n">04</span><h2>Kenapa parameter itu, bukan sekadar apa</h2><span class="note">Modul aras L4</span></div>
+  <p class="serif" style="max-width:70ch; margin-bottom:18px">Pelajar yang menyalin parameter dari kawan tidak akan pernah boleh membaiki masalah sendiri. Kalkulator ini bukan untuk menjimatkan masa — ia untuk pelajar melihat bahawa laju spindle datang daripada satu persamaan, dan bahawa menukar diameter tool menukar segala-galanya. Suruh mereka kira dengan tangan dahulu, kemudian sahkan di sini.</p>
+  <div class="calc">
+    <div class="calc-in">
+      <span class="eyebrow">Bahan &amp; tool</span>
+      <div class="presets" id="presets"></div>
+      <div class="fld"><span class="lb">Laju pemotongan<small>Vc — m/min</small></span><input type="number" id="vc" value="120" step="5"></div>
+      <div class="fld"><span class="lb">Diameter tool<small>D — mm</small></span><input type="number" id="dia" value="10" step="0.5"></div>
+      <div class="fld"><span class="lb">Bilangan mata<small>z — flute</small></span><input type="number" id="z" value="4" step="1"></div>
+      <div class="fld"><span class="lb">Suapan per mata<small>fz — mm/mata</small></span><input type="number" id="fz" value="0.05" step="0.005"></div>
+      <div class="fld"><span class="lb">Had laju spindle mesin<small>n maks — rpm</small></span><input type="number" id="nmax" value="6000" step="500"></div>
+      <div class="fld"><span class="lb">Stepover (ball nose)<small>ae — mm</small></span><input type="number" id="ae" value="0.5" step="0.1"></div>
+      <div class="formula">n = 1000 · Vc / (π · D)<br>Vf = fz · z · n<br>h = ae² / (8 · R)</div>
+    </div>
+    <div class="calc-out">
+      <span class="eyebrow">Nilai untuk dimasukkan ke program</span>
+      <div style="margin-top:10px">
+        <div class="res"><span class="rl">Laju spindle<small>S — rpm</small></span><span class="rv" id="rN">—</span></div>
+        <div class="res"><span class="rl">Kadar suapan<small>F — mm/min</small></span><span class="rv" id="rF">—</span></div>
+        <div class="res"><span class="rl">Tinggi sisa permukaan<small>h — µm (ball nose)</small></span><span class="rv" id="rH">—</span></div>
+      </div>
+      <div class="flag" id="flag"></div>
+      <p class="serif" style="font-size:13.4px; margin-top:16px">Nilai ini titik permulaan konservatif untuk mesin bengkel sekolah. Naikkan hanya selepas potongan pertama kedengaran stabil. Sahkan dengan katalog pengeluar tool sebelum kerja sebenar.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="shead"><span class="n">05</span><h2>Sepuluh salah tekan yang paling kerap</h2><span class="note">Susun ikut kos kerosakan</span></div>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Fasa</th><th>Apa yang ditekan</th><th>Apa yang berlaku</th><th>Pengawal (poka-yoke)</th><th>Kesan</th></tr></thead>
+    <tbody id="taxo"></tbody>
+  </table></div>
+</section>
+
+<section>
+  <div class="shead"><span class="n">06</span><h2>Rantai sebab-akibat — cara berfikir bila permukaan tak menjadi</h2><span class="note">Modul aras L5</span></div>
+  <p class="serif" style="max-width:72ch; margin-bottom:18px">Ini satu-satunya bahagian HUB OS yang benar-benar datang daripada buku Master Prompt. Di sebalik arahan menulis kertas, pengarang menulis rantai sebab-akibat pemesinan secara terang: <span class="mono" style="font-size:12.5px">Ciri Diperhati → Keadaan Pemesinan → Mekanisme Pembentukan → Kesan pada Kekasaran → Makna untuk Kerja</span>. Dia menulisnya supaya AI tidak melompat terus kepada kesimpulan. Rantai yang sama, tanpa diubah, ialah cara seorang jurumesin berpengalaman mendiagnos permukaan yang rosak — dan itulah yang membezakan pelajar aras L5 daripada pelajar yang hanya menukar suapan secara rambang sehingga ia nampak elok.</p>
+  <div class="symrow" id="symrow"></div>
+  <div class="chain" id="chain"></div>
+  <div class="act" id="act"></div>
+
+  <p class="eyebrow" style="display:block; margin:26px 0 0">Empat disiplin daripada buku yang boleh dipindahkan terus kepada pelajar</p>
+  <div class="disc">
+    <div><p class="q">[INFORMATION REQUIRED]</p><p class="t">Buku melarang AI meneka parameter atau sifat bahan; kalau tidak tahu, tulis penanda ini. Pindahkan ke borang persediaan pelajar: tulis <em>[MAKLUMAT DIPERLUKAN]</em> pada ruangan bahan atau jejari tool, jangan isi dengan tekaan. Ruangan kosong yang jujur lebih selamat daripada nombor yang direka.</p></div>
+    <div><p class="q">Ketepatan statistik ≠ kebenaran fizikal</p><p class="t">Buku: jangan samakan R² tinggi dengan model yang betul dari segi fizik. Versi bengkel: bahagian yang masuk toleransi tidak bermakna proses itu betul — ia mungkin betul secara kebetulan, dan keping seterusnya akan gagal.</p></div>
+    <div><p class="q">Korelasi bukan sebab</p><p class="t">Buku: jangan simpulkan sebab-akibat hanya daripada korelasi. Versi bengkel: kalau pelajar tukar suapan <em>dan</em> kelajuan serentak lalu permukaan bertambah baik, mereka belum belajar apa-apa. Satu pemboleh ubah pada satu masa.</p></div>
+    <div><p class="q">Jangan diagnos tanpa bukti</p><p class="t">Buku: jangan isytihar chatter tanpa bukti sokongan. Versi bengkel: "rasa macam chatter" bukan diagnosis. Tunjuk coraknya pada permukaan, atau rakam bunyinya, sebelum menukar apa-apa tetapan.</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="shead"><span class="n">07</span><h2>Apa yang buku Master Prompt A1–A12 boleh sumbang</h2><span class="note">Dan apa yang tidak</span></div>
+  <p class="serif" style="max-width:72ch; margin-bottom:10px">Buku penuh 271 muka surat sudah dibaca. Perlu dinyatakan dengan jelas: <strong>ia tidak mengandungi satu pun jadual parameter, nilai laju pemotongan, prosedur mesin, atau persamaan bernilai.</strong> Setiap arketaip ialah arahan kepada AI tentang cara menulis kertas daripada data yang <em>pengguna</em> bekalkan — malah setiap bab ada seksyen "NO FABRICATION" yang melarang AI mereka-reka parameter dan sifat bahan, yang bermakna buku itu sendiri tidak membekalkan apa-apa nilai. Pelajar tidak boleh belajar mengendalikan mesin daripadanya.</p>
+  <p class="serif" style="max-width:72ch; margin-bottom:18px">Satu lagi corak yang ketara: <strong>sebelas daripada dua belas arketaip berkisar tentang kekasaran permukaan.</strong> Itu bidang kepakaran pengarang, bukan skop latihan vokasional — ia tidak menyentuh ketepatan dimensi, penyediaan mesin, pengaturcaraan, atau keselamatan, iaitu majoriti apa yang pelajar KV perlukan. Yang benar-benar boleh dipindahkan ialah rantai penaakulan di seksyen 05 di atas. Ini pemetaan penuh dua belas arketaip.</p>
+  <div class="map" id="map"></div>
+</section>
+
+<section>
+  <div class="shead"><span class="n">08</span><h2>Bagaimana keberkesanan akan dibuktikan</h2><span class="note">Untuk penilaian projek</span></div>
+  <p class="serif" style="max-width:72ch; margin-bottom:18px">Tiga borang Google itu sudah menghasilkan Sheets setiap kali pelajar menghantar. Sepanjang satu semester, itu bukan rekod pentadbiran — itu dataset. Panel penilai tidak menilai sistem yang nampak kemas; mereka menilai sistem yang boleh menunjukkan nombor sebelum dan selepas. Berikut metrik yang boleh diambil terus daripada borang sedia ada, tanpa perlu alat tambahan.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Metrik</th><th>Sumber data</th><th>Cara dikira</th><th>Sasaran</th></tr></thead>
+    <tbody>
+      <tr><td class="k">Bilangan langgar &amp; tool patah</td><td>Log insiden bengkel + rekod stor</td><td>Kiraan kejadian per semester per mesin</td><td>Turun 60–70%</td></tr>
+      <tr><td class="k">Kadar lulus bahagian pertama</td><td>Borang 1, bahagian keputusan</td><td>(bahagian pertama menepati toleransi ÷ jumlah cubaan) × 100</td><td>Naik 20–25 mata peratusan</td></tr>
+      <tr><td class="k">Item checklist paling kerap gagal</td><td>Borang 2 → Sheets</td><td>Kekerapan setiap item ditanda gagal, disusun menurun</td><td>Kenal pasti 5 teratas untuk latihan sasaran</td></tr>
+      <tr><td class="k">Job Card ditolak pada pusingan pertama</td><td>Borang 1 dan Borang 3</td><td>Nisbah ditolak berbanding dihantar</td><td>Turun 50% — menunjukkan persediaan bertambah baik</td></tr>
+      <tr><td class="k">Masa setup purata</td><td>Cap masa automatik borang</td><td>Beza antara hantar Borang 1 dan hantar Borang 2</td><td>Turun 20% menjelang minggu 8</td></tr>
+      <tr><td class="k">Pelajar naik aras L2 ke L3</td><td>Rekod pensyarah</td><td>Peratus kohort yang boleh setup tanpa dibantu</td><td>80% dalam satu semester</td></tr>
+      <tr><td class="k">Kos mata alat rosak</td><td>Rekod pengeluaran stor</td><td>RM per semester per kelas</td><td>Turun 40%</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="warnbox">
+    <span class="lbl">Risiko</span>
+    <div>
+      <h4>Tanpa baseline, tiada satu pun nombor di atas bermakna</h4>
+      <p>Ini risiko terbesar projek, dan ia perlu diselesaikan sebelum pelaksanaan bermula — bukan selepas. Kalau sistem dilancarkan dahulu dan baru terfikir hendak mengukur, angka "sebelum" hilang selama-lamanya dan inovasi tidak boleh dibuktikan, hanya boleh didakwa. Kumpul baseline dalam dua minggu pertama: rekod stor tool tiga semester lepas, kiraan insiden daripada log bengkel, dan satu sesi bersama keempat-empat pensyarah untuk menganggarkan kadar lulus bahagian pertama semasa. Anggaran pensyarah yang direkodkan bertarikh lebih baik daripada tiada baseline langsung.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>CNC HUB OS Matang · draf kerja v1.2</span>
+  <span>Semua langkah mesin-spesifik menunggu pengesahan manual</span>
+</footer>
+</div>
+
+<script>
+/* ---------------- data ---------------- */
+const LEVELS = [
+  {lv:"L0", nm:"Pemerhati", pct:8, can:[
+    "Tahu di mana setiap E-STOP di bengkel dan boleh sampai dalam 2 saat",
+    "Pakai PPE betul: cermin mata, kasut keselamatan, rambut/lengan terurus",
+    "Tahu kenapa sarung tangan dilarang berhampiran spindle berputar",
+    "Boleh nama bahagian utama mesin: spindle, meja, ATC, vise, control panel"],
+   ev:"Lulus kuiz keselamatan 100%. Tunjuk semua E-STOP tanpa dipandu. Belum sentuh mana-mana butang mesin."},
+  {lv:"L1", nm:"Pembantu", pct:20, can:[
+    "Hidup dan matikan mesin ikut urutan betul",
+    "Buat reference return (homing) dengan susunan paksi yang selamat",
+    "Jog paksi dengan JOG dan handwheel; faham beza ×1, ×10, ×100",
+    "Pasang dan tanggalkan vise, bersihkan meja, kendalikan chip dengan selamat"],
+   ev:"Homing dan jog 10 kali tanpa satu pun alarm atau langgar. Boleh terangkan kenapa Z dahulu."},
+  {lv:"L2", nm:"Operator berpandu", pct:34, can:[
+    "Jalankan program yang sudah disediakan orang lain, di bawah seliaan",
+    "Guna FEED HOLD dan SINGLE BLOCK; tahu bila tekan yang mana",
+    "Baca paparan POS dan DISTANCE TO GO semasa mesin berjalan",
+    "Ukur bendakerja dengan vernier dan micrometer, catat dalam borang"],
+   ev:"Selesai 5 bahagian ikut lukisan, dalam toleransi, tanpa campur tangan pensyarah semasa larian."},
+  {lv:"L3", nm:"Penyedia (setter)", pct:50, can:[
+    "Set tool length offset untuk setiap tool dan sahkan nombor H sepadan",
+    "Set work offset G54 X, Y, Z sendiri dengan edge finder atau kaedah kertas",
+    "Muat program, sahkan dengan machine lock dan dry run sebelum potong",
+    "Jalankan first-off inspection dan laras wear offset (bukan geometry)"],
+   ev:"Setup lengkap dari mesin kosong hingga bahagian pertama menepati saiz, diperhati tetapi tidak dibantu."},
+  {lv:"L4", nm:"Pengaturcara asas", pct:66, can:[
+    "Tulis G-code mudah tangan: G54, G43 H, G0/G1/G2/G3, kitaran gerudi G81/G83",
+    "Kira sendiri S dan F daripada Vc, D, z dan fz — tidak menyalin",
+    "Terangkan kenapa suapan tinggi menaikkan Ra, dan kenapa tool kecil perlu rpm tinggi",
+    "Sunting program di kawalan untuk membetulkan satu blok, dengan selamat"],
+   ev:"Program tulisan sendiri untuk bahagian 6 ciri, jalan bersih pada larian pertama selepas pengesahan."},
+  {lv:"L5", nm:"Penyelesai masalah", pct:82, can:[
+    "Diagnos chatter, burr, saiz sisih dan kemasan buruk kepada punca sebenar",
+    "Guna deria sebagai sensor: bunyi potongan, warna chip, getaran, bau",
+    "Kenal pasti tool haus daripada kemasan dan bunyi sebelum ia patah",
+    "Laras satu pemboleh ubah pada satu masa dan rekod kesannya"],
+   ev:"Ambil bahagian yang gagal, kenal pasti punca dan betulkan — dengan hujah bertulis, bukan tekaan."},
+  {lv:"L6", nm:"Pengoptimum", pct:100, can:[
+    "Jalankan eksperimen berstruktur: 3 paras suapan × 3 paras kelajuan, 9 keping",
+    "Plot kesan setiap parameter ke atas Ra dan pilih tetapan terbaik",
+    "Timbang cycle time lawan hayat tool lawan kualiti permukaan",
+    "Tulis SOP untuk pelajar lain guna — dan ia berjaya di tangan mereka"],
+   ev:"Satu laporan eksperimen ringkas dengan data 9 keping, graf kesan, dan cadangan parameter yang diterima pakai bengkel."}
+];
+
+const PHASES = [
+  {c:"F1", nm:"Pelan &amp; Persediaan", sub:"Sebelum sentuh mesin", t:"20–40 min",
+   why:"Fasa ini tiada satu butang pun, dan ia menyelamatkan lebih banyak mesin daripada semua fasa lain digabungkan. Pelajar yang mula di panel tanpa tahu datum di mana dan tool mana untuk apa akan mengambil keputusan itu sambil mesin sudah hidup — di situlah crash berlaku.",
+   keysNote:"Tiada butang ditekan. Semua kerja di atas meja, dengan pensel.",
+   steps:[],
+   gate:["Lukisan dibaca dan setiap dimensi kritikal dibulatkan",
+         "Bahan bendakerja disahkan (aluminium / keluli lembut / lain) — bukan diandaikan",
+         "Senarai tool ditulis: nombor tool, diameter, bilangan mata, panjang julur",
+         "S dan F dikira untuk setiap tool dan ditulis di borang, bukan dalam kepala",
+         "Datum (titik sifar bendakerja) ditanda pada lukisan dengan simbol jelas",
+         "Program dibaca baris demi baris di atas kertas — kedudukan Z setiap G0 disemak"],
+   errs:[{t:"Guna parameter dari kawan tanpa tahu bahan",w:"Vc keluli pada aluminium: terlalu perlahan, chip melekat, tool patah. Sebaliknya: tool terbakar.",g:"Borang persediaan tidak boleh ditandatangan tanpa ruangan bahan diisi."},
+         {t:"Datum tidak ditetapkan sebelum ke mesin",w:"Pelajar pilih sudut secara rambang di mesin, program mengira dari sudut lain, keseluruhan bahagian jadi cermin.",g:"Lukisan mesti ada tanda datum berbulat sebelum keluar dari bilik pelan."}]},
+
+  {c:"F2", nm:"Hidup &amp; Homing", sub:"Reference return", t:"3–5 min",
+   why:"Mesin tidak tahu di mana paksinya berada sehingga ia pulang ke titik rujukan. Sebelum homing selesai, semua pembacaan kedudukan tidak bermakna dan semua program berbahaya. Susunan paksi penting: Z dinaikkan dahulu supaya tool berada di atas segala-galanya sebelum X dan Y bergerak.",
+   keysNote:"Susunan ini yang paling kerap salah pada minggu pertama.",
+   steps:[
+    {k:[["MAIN POWER","",""],["ON","",""]], t:"Hidupkan kuasa utama di belakang mesin. Tunggu kipas dan sistem hidraulik stabil."},
+    {k:[["CONTROL ON","",""]], t:"Hidupkan kawalan. Tunggu skrin selesai but sepenuhnya — jangan tekan apa-apa semasa ini."},
+    {k:[["EMERGENCY STOP","stop",""]], t:"Pusing butang E-STOP ikut arah jam untuk melepaskannya. Ia akan timbul sendiri. <em>Jangan tarik.</em>"},
+    {k:[["RESET","",""]], t:"Tekan RESET untuk kosongkan alarm baki. Jika alarm masih ada, berhenti dan panggil pensyarah — jangan cuba teka."},
+    {k:[["REF","mode",""],["/","arrow",""],["ZRN","mode",""]], t:"Pilih mod reference return pada pemilih mod."},
+    {k:[["+Z","",""]], t:"Tekan +Z <em>dahulu</em>. Tunggu lampu ZRN Z menyala dan paksi berhenti sepenuhnya."},
+    {k:[["+X","",""],["+Y","",""]], t:"Barulah +X dan +Y. Tool kini sudah tinggi, jadi tiada apa untuk dilanggar."}],
+   gate:["Ketiga-tiga lampu reference (X, Y, Z) menyala",
+         "Skrin POS → MACHINE menunjukkan 0.000 pada semua paksi",
+         "Tiada mesej alarm di skrin",
+         "E-STOP diuji sekali oleh pelajar dan dilepaskan semula"],
+   errs:[{t:"Homing X atau Y dahulu",w:"Tool masih rendah dari fasa sebelum. Paksi bergerak menyilang meja dan melanggar vise atau bendakerja.",g:"Tampal pelekat kekal di sebelah pemilih mod: <b>Z DAHULU</b>. Pensyarah sahkan lampu Z sebelum benarkan X/Y."},
+         {t:"Jog paksa sedangkan E-STOP masih tertekan",w:"Tiada gerakan, pelajar sangka mesin rosak, tekan lebih banyak butang secara rambang.",g:"Langkah 3 dalam senarai gerbang: E-STOP diuji dan dilepaskan — bukan diandaikan."}]},
+
+  {c:"F3", nm:"Pemasangan Bendakerja", sub:"Workholding", t:"10–20 min",
+   why:"Bendakerja yang longgar adalah satu-satunya kegagalan yang mencederakan orang, bukan hanya mesin. Semua fasa lain merosakkan logam; fasa ini merosakkan manusia. Pelajar mesti faham bahawa daya pemotongan cuba menolak bendakerja keluar dari vise sepanjang masa.",
+   keysNote:"Hanya mod manual digunakan. Spindle tidak berputar langsung dalam fasa ini.",
+   steps:[
+    {k:[["JOG","mode",""]], t:"Mod JOG untuk gerakan kasar menjauhkan spindle dari kawasan kerja."},
+    {k:[["HANDLE","mode",""],["/","arrow",""],["MPG","mode",""]], t:"Mod handwheel untuk gerakan halus. Pilih paksi pada pemilih, kemudian pilih kadar."},
+    {k:[["×1","",""],["×10","",""],["×100","",""]], t:"×1 = 0.001 mm setiap klik. ×100 = 0.1 mm setiap klik dan bergerak laju. <em>Selepas guna, pulangkan ke ×1 sentiasa.</em>"},
+    {k:[["EMERGENCY STOP","stop",""]], t:"Sebelum tangan masuk ke kawasan kerja untuk mengetatkan vise — tekan E-STOP. Tangan dan paksi tidak pernah hidup serentak."}],
+   gate:["Vise diketatkan dan boltnya kemas ke meja",
+         "Parallel rapat — diketuk dan diuji tarik; tidak boleh ditarik keluar dengan tangan",
+         "Bendakerja menonjol dari rahang hanya setinggi yang perlu untuk dipotong",
+         "Semua kunci, spanner dan alat ukur dikeluarkan dari meja",
+         "Chip dari kerja sebelumnya dibersihkan dengan berus, bukan tangan atau angin ke slideway",
+         "Pintu boleh ditutup sepenuhnya tanpa terkena apa-apa"],
+   errs:[{t:"Handwheel ditinggalkan pada ×100",w:"Pelajar berikut pusing sedikit untuk sentuhan halus, paksi lompat 5 mm dan tool tenggelam ke dalam bendakerja.",g:"Item gerbang tetap untuk setiap pelajar yang menyerahkan mesin: kadar dipulangkan ke ×1."},
+         {t:"Parallel tidak rapat ke dasar vise",w:"Bendakerja duduk senget. Dalam potong tidak sekata sepanjang bahagian, dan bendakerja boleh terangkat semasa dipotong.",g:"Ujian ketuk-dan-tarik pada kedua-dua parallel, disaksikan, sebelum vise diketatkan penuh."}]},
+
+  {c:"F4", nm:"Tool &amp; Tool Length Offset", sub:"Panjang tool", t:"5–10 min setiap tool",
+   why:"Kawalan tidak tahu tool mana panjang mana pendek. Nombor offset H yang salah bermakna kawalan menyangka tool 60 mm sedangkan yang terpasang 120 mm — dan ia akan menghantar tool itu 60 mm lebih dalam daripada yang dimaksudkan. Ini punca crash paling mahal di bengkel latihan.",
+   keysNote:"Nombor tool dan nombor H mesti sama. Tiada pengecualian untuk pelajar.",
+   steps:[
+    {k:[["MDI","mode",""]], t:"Mod MDI untuk tukar tool secara manual."},
+    {g:"T01 M06 ;", t:"Taip arahan, tekan INSERT, kemudian CYCLE START. Perhatikan ATC — tangan jauh, pintu tutup."},
+    {k:[["INSERT","",""],["CYCLE START","go",""]], t:"Tool 1 kini di spindle."},
+    {k:[["HANDLE","mode",""]], t:"Turunkan tool perlahan-lahan ke permukaan rujukan dengan handwheel pada ×10, kemudian ×1."},
+    {k:[["OFFSET SETTING","",""],["OFFSET","soft",""],["GEOM","soft",""]], t:"Buka jadual offset tool, lajur geometri (H). <span class='badge-verify'>Sahkan</span> nama soft key pada mesin anda."},
+    {k:[["MEASURE","soft",""],["/","arrow",""],["INPUT","",""]], t:"Masukkan nilai panjang tool pada baris H yang <em>sama nombor</em> dengan nombor tool."}],
+   gate:["Tool dikepit dalam holder dengan julur paling pendek yang boleh menyiapkan kerja",
+         "Nombor tool = nombor H, disemak dua kali dan dibaca kuat kepada rakan",
+         "Setiap tool dalam program sudah ada nilai offset — tiada baris kosong",
+         "Nilai offset masuk akal (bukan 0.000, bukan berbeza 50 mm dari tool serupa)",
+         "Holder dan taper dibersihkan sebelum dimasukkan ke spindle"],
+   errs:[{t:"T01 dipanggil tetapi G43 H02 ditulis",w:"Kawalan guna panjang tool lain. Tool masuk terlalu dalam atau memotong udara sepenuhnya.",g:"Peraturan bengkel: nombor H sentiasa sama dengan nombor T. Tulis di papan besar, tiada pengecualian."},
+         {t:"Julur tool terlalu panjang",w:"Chatter, kemasan berparut, tool patah, dan pelajar menyalahkan suapan.",g:"Item gerbang: julur diukur dan dicatat. Jika lebih 4× diameter, mesti dibenarkan pensyarah."}]},
+
+  {c:"F5", nm:"Work Offset G54", sub:"Datum bendakerja", t:"10–15 min",
+   why:"G54 memberitahu kawalan di mana sudut sifar bendakerja berada dalam ruang mesin. Salah di sini, seluruh program salah — walaupun setiap baris G-code betul sempurna. Ralat Z paling merbahaya: sifar diletakkan di meja dan bukan di permukaan atas bendakerja bermakna tool menyelam sedalam ketebalan bahan.",
+   keysNote:"Kaedah kertas: turunkan tool sehingga kertas 0.05 mm baru tersepit, kemudian tolak 0.05 mm.",
+   steps:[
+    {k:[["HANDLE","mode",""],["×10","",""]], t:"Gerakkan tool ke tepi X bendakerja dengan edge finder atau kaedah kertas."},
+    {k:[["OFFSET SETTING","",""],["WORK","soft",""]], t:"Buka jadual work coordinate. <span class='badge-verify'>Sahkan</span> laluan soft key pada kawalan anda."},
+    {k:[["G54","soft",""]], t:"Letakkan kursor pada baris G54, lajur X."},
+    {k:[["MEASURE","soft",""]], t:"Rakam kedudukan. Ulang untuk Y."},
+    {k:[["×1","",""]], t:"Untuk Z: kadar ×1 sahaja. Turunkan sehingga kertas mula tersangkut pada permukaan <em>atas</em> bendakerja."},
+    {k:[["MEASURE","soft",""],["/","arrow",""],["INPUT","",""]], t:"Rakam Z. Tolak ketebalan kertas jika kaedah kertas digunakan."}],
+   gate:["Sudut datum di mesin sama dengan sudut datum bertanda pada lukisan",
+         "Z sifar berada di permukaan ATAS bendakerja (atau di mana lukisan menetapkan), bukan di meja",
+         "Nilai G54 X, Y, Z semuanya bukan 0.000",
+         "Nilai G54 dibandingkan dengan setup sebelumnya — beza besar bermakna ada yang salah",
+         "Arah X positif disahkan: jog +X menjauhi datum, bukan ke arahnya"],
+   errs:[{t:"Z sifar diambil pada permukaan meja",w:"Tool menyelam sedalam ketebalan bendakerja pada gerakan pertama. Tool patah, bendakerja musnah, kadang-kadang spindle rosak.",g:"Item gerbang berasingan khusus untuk Z, dengan pensyarah menyaksikan kertas tersepit di permukaan atas."},
+         {t:"Datum diambil di sudut bertentangan",w:"Bahagian keluar bercermin. Semua lubang di tempat salah tetapi mesin berjalan sempurna, jadi tiada amaran.",g:"Tanda datum dilukis pada bendakerja sendiri dengan marker sebelum dipasang ke vise."}]},
+
+  {c:"F6", nm:"Sahkan Program", sub:"Verification", t:"15–25 min",
+   why:"Ini fasa yang paling kerap dilangkau dan paling banyak menyelamatkan. Program yang belum disahkan adalah tekaan. Susunan di bawah menurunkan risiko secara berperingkat: mula-mula tiada gerakan langsung, kemudian gerakan tanpa memotong, kemudian potong perlahan dengan tangan di FEED HOLD.",
+   keysNote:"Empat tetapan mesti dimatikan semula sebelum potongan sebenar. Ini punca ralat tersembunyi.",
+   steps:[
+    {k:[["EDIT","mode",""]], t:"Muat atau semak program. Baca sekali lagi di skrin."},
+    {k:[["MEM","mode",""],["/","arrow",""],["AUTO","mode",""],["RESET","",""]], t:"Tukar ke mod automatik dan tekan RESET supaya kursor kembali ke baris pertama. <em>Kursor di tengah program ialah punca crash.</em>"},
+    {k:[["MACHINE LOCK","",""],["CYCLE START","go",""]], t:"Peringkat 1 — paksi tidak bergerak langsung, hanya paparan kedudukan berjalan. Semak laluan dan nilai Z."},
+    {k:[["MACHINE LOCK","",""]], t:"Matikan machine lock. <em>Kedudukan kini tidak sepadan — mesti homing semula sebelum teruskan.</em>"},
+    {k:[["ZRN","mode",""],["+Z","",""],["+X","",""],["+Y","",""]], t:"Homing semula, Z dahulu seperti biasa."},
+    {k:[["DRY RUN","",""],["SINGLE BLOCK","",""],["RAPID 25%","",""]], t:"Peringkat 2 — angkat Z sekurang-kurangnya 50 mm melalui work offset, hidupkan ketiga-tiga. Tekan CYCLE START satu blok pada satu masa."},
+    {k:[["DRY RUN","",""],["FEED 10%","",""],["SINGLE BLOCK","",""]], t:"Peringkat 3 — <em>matikan DRY RUN</em>, pulangkan Z offset, feed override 10–20%, single block kekal hidup. Tangan di FEED HOLD."},
+    {k:[["FEED HOLD","stop",""]], t:"Ibu jari berada di sini sepanjang blok pertama menyentuh logam. Bukan berhampiran — di atasnya."}],
+   gate:["Kursor berada di baris pertama program (RESET ditekan)",
+         "Laluan disemak dengan machine lock dan tiada gerakan luar jangka",
+         "Homing semula dilakukan selepas machine lock dimatikan",
+         "DRY RUN sudah DIMATIKAN sebelum potongan sebenar",
+         "MACHINE LOCK sudah DIMATIKAN",
+         "Work offset Z dipulangkan ke nilai sebenar selepas ujian angkat",
+         "Rapid override 25%, feed override 10–20%, SINGLE BLOCK hidup",
+         "Pintu tertutup, tangan di FEED HOLD, pensyarah berdiri di sebelah"],
+   errs:[{t:"DRY RUN tertinggal hidup semasa potongan sebenar",w:"Kadar suapan diambil dari kadar jog, bukan dari F dalam program. Tool masuk logam pada kelajuan jog dan patah serta-merta.",g:"Gerbang F6 senaraikan DRY RUN sebagai item DIMATIKAN yang mesti ditanda — bukan diandaikan."},
+         {t:"CYCLE START ditekan dengan kursor di tengah program",w:"Mesin bermula tanpa tool change, tanpa G43, tanpa spindle hidup. Tool ditolak ke dalam bahan tanpa berputar.",g:"Tekan RESET sebelum setiap CYCLE START yang memulakan larian. Jadikan ia gerakan automatik."},
+         {t:"MACHINE LOCK tertinggal hidup",w:"Program 'berjalan' sempurna berulang kali tetapi tiada apa dipotong; pelajar keliru dan mula menukar benda lain secara rambang.",g:"Selepas machine lock, homing semula ialah langkah wajib, bukan pilihan."}]},
+
+  {c:"F7", nm:"Potong, Ukur, Tutup", sub:"First-off &amp; shutdown", t:"Bergantung kerja",
+   why:"Bahagian pertama bukan produk — ia data. Diukur, dibandingkan dengan lukisan, dan offset dilaras sebelum bahagian kedua. Pelajar yang memotong sepuluh keping sebelum mengukur telah membuang sembilan keping bahan dan tidak belajar apa-apa.",
+   keysNote:"Laras WEAR offset untuk pembetulan saiz. Jangan sesekali sentuh GEOMETRY untuk ini.",
+   steps:[
+    {k:[["FEED 20%","",""],["→","arrow",""],["FEED 50%","",""],["→","arrow",""],["FEED 100%","",""]], t:"Naikkan secara berperingkat setelah bunyi potongan stabil. Turun semula serta-merta jika ada chatter."},
+    {k:[["SINGLE BLOCK","",""]], t:"Matikan single block hanya selepas satu larian penuh berjaya diperhati."},
+    {k:[["OPTIONAL STOP","",""]], t:"Hidupkan supaya M01 dalam program memberhentikan mesin untuk pemeriksaan di titik yang dirancang."},
+    {k:[["OFFSET SETTING","",""],["OFFSET","soft",""],["WEAR","soft",""]], t:"Masukkan pembetulan saiz di lajur <em>wear</em>. Contoh: bahagian 0.04 mm terlalu besar pada diameter → tolak 0.02 dari wear jejari."},
+    {k:[["EMERGENCY STOP","stop",""],["CONTROL OFF","",""],["MAIN POWER","",""]], t:"Tutup ikut urutan terbalik. Bersihkan meja, sapu coolant, kosongkan chip tray."}],
+   gate:["Bahagian pertama diukur pada setiap dimensi kritikal dan dicatat dalam borang",
+         "Pembetulan dibuat di lajur WEAR, bukan GEOMETRY",
+         "Kemasan permukaan diperiksa dan dibandingkan dengan sampel rujukan",
+         "Tool diperiksa untuk kehausan sebelum bahagian berikutnya",
+         "Chip dibersihkan dengan berus dan penyodok — bukan tangan, bukan angin ke arah slideway",
+         "Meja disapu, coolant diperiksa, mesin dimatikan ikut urutan terbalik",
+         "Borang serahan mesin ditandatangan: handwheel di ×1, offset kekal, tiada tool di spindle"],
+   errs:[{t:"Geometry offset dilaras untuk membetulkan saiz",w:"Rekod panjang tool sebenar hilang. Setup seterusnya bermula dari nilai yang sudah tercemar dan tiada siapa tahu nilai asal.",g:"Lajur GEOMETRY dikunci untuk pelajar L3 ke bawah — hanya pensyarah boleh sentuh."},
+         {t:"Chip ditiup dengan angin tekanan tinggi",w:"Chip masuk ke slideway dan way cover, menghakis mesin secara perlahan. Kerosakan tidak nampak sehingga setahun kemudian.",g:"Angin tekanan dikeluarkan dari bengkel latihan. Berus dan penyodok sahaja."}]}
+];
+
+const TAXO = [
+  {p:"F5", k:"Z sifar diambil di meja, bukan di permukaan atas", w:"Tool menyelam sedalam ketebalan bendakerja pada gerakan pertama", g:"Gerbang Z berasingan, disaksikan pensyarah dengan ujian kertas", s:"c", sl:"Kritikal"},
+  {p:"F4", k:"Nombor H tidak sepadan dengan nombor T", w:"Kawalan guna panjang tool yang salah — crash atau memotong udara", g:"Peraturan mutlak H = T, dibaca kuat kepada rakan sebelum sahkan", s:"c", sl:"Kritikal"},
+  {p:"F6", k:"DRY RUN tertinggal hidup semasa potong", w:"Suapan jadi kadar jog; tool patah sebaik menyentuh logam", g:"Gerbang menyenaraikan tetapan yang mesti DIMATIKAN, bukan hanya dihidupkan", s:"c", sl:"Kritikal"},
+  {p:"F2", k:"Homing X atau Y sebelum Z", w:"Tool masih rendah, melintas meja dan melanggar vise", g:"Pelekat kekal 'Z DAHULU' di sebelah pemilih mod", s:"c", sl:"Kritikal"},
+  {p:"F3", k:"Bendakerja tidak diketatkan cukup", w:"Bendakerja terlepas dan terbang — satu-satunya kegagalan yang mencederakan orang", g:"Ujian ketuk-dan-tarik disaksikan; pintu wajib tutup sebelum spindle hidup", s:"c", sl:"Kritikal"},
+  {p:"F6", k:"CYCLE START dengan kursor di tengah program", w:"Bermula tanpa tool change, tanpa G43, tanpa spindle berputar", g:"RESET sebelum setiap CYCLE START yang memulakan larian", s:"c", sl:"Kritikal"},
+  {p:"F3", k:"Handwheel ditinggalkan pada ×100", w:"Pusingan kecil melompat 5 mm; tool tenggelam ke dalam bendakerja", g:"Serahan mesin memerlukan kadar dipulangkan ke ×1", s:"w", sl:"Tinggi"},
+  {p:"F5", k:"Datum diambil di sudut bertentangan", w:"Bahagian keluar bercermin; mesin berjalan sempurna jadi tiada amaran", g:"Tanda datum dilukis pada bendakerja sebelum dipasang", s:"w", sl:"Tinggi"},
+  {p:"F7", k:"GEOMETRY dilaras untuk betulkan saiz", w:"Rekod panjang tool tercemar; setup seterusnya bermula salah", g:"Lajur geometry dikunci untuk pelajar di bawah L3", s:"w", sl:"Tinggi"},
+  {p:"F6", k:"MACHINE LOCK tertinggal hidup", w:"Program berjalan tanpa memotong; pelajar keliru dan menukar benda lain", g:"Homing semula wajib selepas machine lock dimatikan", s:"l", sl:"Sederhana"}
+];
+
+const MAP = [
+  {a:"A4", h:"Mechanism-Based Surface Roughness Modeling", p:"Sumbangan terbesar, dan bukan promptnya — rantai fizikalnya. Seksyen 7, 9 dan 11 menulis dengan jelas: parameter → gerakan tool → sentuhan → ubah bentuk bahan → tinggi sisa → morfologi → kekasaran; dan progresi menggosok → membajak → memotong. Itu asas modul diagnosis di seksyen 05.", to:"→ L5 · rantai diagnosis", off:false},
+  {a:"A7", h:"Chatter, Vibration &amp; Smart CNC Monitoring", p:"Menyenaraikan fenomena dinamik pemesinan satu per satu: chatter regeneratif, getaran paksa, runout tool, pesongan, pemotongan terputus-putus. Untuk mesin sekolah yang kurang tegar, chatter ialah aduan nombor satu — senarai ini jadi rangka kad diagnosis getaran.", to:"→ L5 · kad chatter", off:false},
+  {a:"A2", h:"Parameter Optimization &amp; Statistical Analysis", p:"Konsepnya sahaja yang berguna: parameter tidak diteka, ia diuji secara berstruktur. Turunkan jadi bengkel 9 keping — tiga paras suapan × tiga paras kelajuan, ukur Ra setiap satu, plot kesan. Tiada statistik lanjutan diperlukan.", to:"→ L6 · eksperimen bengkel", off:false},
+  {a:"A12", h:"Tool Path, Tool Geometry &amp; Surface Roughness", p:"Rantai geometri tool → parameter → kinematik → permukaan. Ini menyokong soalan L4 yang pelajar selalu tanya tetapi jarang dijawab: kenapa stepover penting, kenapa jejari hujung tool mengubah kemasan, kenapa arah masuk toolpath mengubah burr.", to:"→ L4 · kalkulator parameter", off:false},
+  {a:"A3 / A6", h:"Surface Integrity &amp; Sustainable Machining", p:"A3 menyentuh kehausan tool dan integriti permukaan — bahan untuk modul 'bila tukar mata'. A6 tentang pemesinan lestari: penggunaan bahan penyejuk, tenaga, sisa. Yang kedua itu sesuai jadi projek L6 di kolej, bukan kandungan teras.", to:"→ L5–L6 · modul sokongan", off:false},
+  {a:"A1 · A5 · A8 · A9 · A10 · A11", h:"Sensor, ML, multi-sensor fusion, Digital Twin, daya pemotongan", p:"Enam arketaip memerlukan dinamometer, akselerometer, sistem DAQ dan latihan model — tiada satu pun praktikal di KV Matang. Tetapi ideanya boleh diturunkan sepenuhnya: manusia juga sistem berbilang sensor. Bunyi, warna chip, getaran di vise, bau bahan panas. Empat saluran, percuma.", to:"→ L5 · deria sebagai sensor", off:true},
+  {a:"—", h:"Yang sengaja ditinggalkan", p:"Semua prompt penjanaan abstrak, kajian literatur, metodologi, validasi statistik dan kesimpulan kertas — iaitu majoriti 271 muka surat itu. Ia untuk penyelidik yang menulis untuk jurnal. Membawanya masuk akan menjadikan modul kelihatan canggih tetapi tidak mengubah apa-apa di lantai bengkel.", to:"→ Tidak dimasukkan", off:true},
+  {a:"✓", h:"Di mana buku ini benar-benar berguna kepada anda", p:"Bukan untuk pelajar — untuk pensyarah. Kalau mana-mana pensyarah KV Matang sedang membuat sarjana atau menulis kertas persidangan tentang pemesinan, buku ini memang alat yang betul untuk kerja itu. Cuma jangan silap letak: ia alat penulisan penyelidikan, bukan alat latihan vokasional.", to:"→ Pembangunan staf", off:true}
+];
+
+const SYMPTOMS = [
+  {n:"Bunyi melengking, permukaan bergelombang",
+   c:["Corak beralun seragam merentas permukaan; bunyi tinggi menjerit semasa memotong; kadang meninggalkan kesan pada vise juga.",
+      "Julur tool panjang, workholding kurang tegar, lebar potong (ae) terlalu besar, atau rpm kebetulan jatuh dalam zon tidak stabil.",
+      "Chatter regeneratif. Tool melantun dan meninggalkan permukaan beralun; pusingan berikutnya memotong permukaan beralun itu, jadi tebal chip berubah-ubah dan lantunan menguat sendiri.",
+      "Ra melonjak mendadak. Coraknya berkala dan jaraknya tidak sepadan dengan tanda suapan — itu cara membezakannya.",
+      "Bahagian mungkin ditolak. Lebih penting: chatter memendekkan hayat spindle dan tool jauh lebih cepat daripada potongan stabil."],
+   act:"Pendekkan julur tool dahulu — itu pembetulan paling berkesan. Kemudian ubah rpm ±20%, bukan turunkan suapan (menurunkan suapan selalunya memburukkan chatter). Kurangkan ae. Periksa vise dan parallel."},
+
+  {n:"Tanda suapan kasar tetapi seragam",
+   c:["Garis selari yang sekata, jarak tetap, tiada corak rawak. Permukaan boleh dirasa berigi dengan kuku.",
+      "Suapan per mata (fz) terlalu besar untuk jejari hujung tool, atau stepover (ae) terlalu besar untuk ball nose.",
+      "Tinggi sisa geometri. Setiap laluan tool meninggalkan puncak kecil antara laluan. Ini bukan kerosakan — ia geometri tulen, dan boleh diramal sepenuhnya sebelum memotong.",
+      "Ra boleh dikira dahulu: h ≈ ae²/(8R). Hubungan kuasa dua — separuh stepover memberi seperempat tinggi sisa.",
+      "Inilah satu-satunya jenis kekasaran yang pelajar boleh ramal dengan pensel sebelum mesin hidup. Guna ia untuk mengajar kawalan, bukan tekaan."],
+   act:"Kurangkan fz atau ae, atau guna tool berjejari lebih besar untuk laluan akhir. Suruh pelajar kira h dengan kalkulator di seksyen 03 dahulu, potong, kemudian ukur — dan bandingkan."},
+
+  {n:"Berkilat tidak sekata, bercalar, chip melekat",
+   c:["Kilauan tidak rata, calar halus tidak berarah, dan serpihan bahan melekat pada mata tool bila diperiksa.",
+      "Laju pemotongan (Vc) terlalu rendah untuk bahan — paling kerap pada aluminium dan keluli lembut. Tiada pelincir, atau tool sudah tumpul.",
+      "Built-up edge. Bahan melekat dan membina pada mata tool, menjadi 'mata palsu', kemudian tertanggal dan terseret merentas permukaan yang baru dipotong.",
+      "Ra tidak menentu — dua ukuran pada bahagian sama boleh berbeza jauh. Ketidaktentuan itu sendiri ialah tandanya.",
+      "Kalau pelajar cuba membaiki ini dengan menurunkan suapan, ia bertambah teruk. Ini kes di mana naluri 'perlahankan' adalah salah."],
+   act:"Naikkan Vc, jangan turunkan. Guna pelincir atau coolant. Tukar insert atau end mill kepada yang tajam. Untuk aluminium, guna tool tajam tanpa salutan dan jangan sekali-kali potong kering perlahan."},
+
+  {n:"Burr besar di tepi keluar",
+   c:["Bibir logam tajam terbentuk di tepi tempat tool keluar daripada bahan; tepi masuk biasanya bersih.",
+      "Tool tumpul, kedalaman potong besar pada laluan akhir, atau toolpath keluar terus dari tepi tanpa bahan menyokong di belakang.",
+      "Membajak, bukan memotong. Di tepi keluar tiada bahan di belakang untuk menyokong ricih, jadi bahan dibengkokkan keluar dan bukan dipotong bersih.",
+      "Bukan isu Ra — ini kualiti tepi. Tetapi ia isu keselamatan: burr memotong tangan pelajar semasa mengukur dan menanggalkan bahagian.",
+      "Burr ialah petunjuk paling awal bahawa tool sudah perlu ditukar, lebih awal daripada perubahan kemasan."],
+   act:"Laluan akhir ringan dengan ap kecil. Tukar kepada tool tajam. Ubah arah masuk/keluar toolpath supaya tidak keluar terus di tepi. Chamfer tepi sebagai operasi terakhir yang dirancang, bukan dikikir tangan."},
+
+  {n:"Dinding tidak tegak, saiz berubah ikut kedalaman",
+   c:["Dinding menirus; dimensi di atas berbeza daripada di bawah walaupun program menentukan dinding tegak.",
+      "Julur tool panjang, diameter tool kecil, ae besar dalam satu laluan penuh.",
+      "Pesongan tool. Daya potong sisi menolak tool menjauhi dinding. Pesongan bertambah mengikut kuasa tiga panjang julur — dua kali panjang bermakna lapan kali pesongan.",
+      "Ralat dimensi dan taper, bukan kekasaran. Permukaan boleh nampak cantik dan saiz tetap salah.",
+      "Ini punca pelajar 'membetulkan' offset berulang kali tanpa berjaya — mereka membetulkan gejala, bukan puncanya."],
+   act:"Tambah spring pass: ulang laluan akhir dengan ae hampir sifar sehingga tiada lagi bahan dibuang. Pendekkan julur. Guna tool lebih tebal untuk laluan kasar dan tool kecil hanya untuk sudut."},
+
+  {n:"Bahan atau chip bertukar warna, tool cepat rosak",
+   c:["Chip bertukar biru atau perang; bahan berubah warna di kawasan potong; kadang berasap; tool haus mendadak.",
+      "Vc terlalu tinggi, tiada penyejukan, tool sudah haus — atau, yang paling mengejutkan pelajar, suapan terlalu RENDAH.",
+      "Haba berlebihan di zon ricih. Suapan terlalu rendah menyebabkan mata tool menggosok permukaan tanpa membuang bahan yang cukup; geseran menjana haba tetapi tiada chip untuk membawanya pergi.",
+      "Kesan pada integriti permukaan, bukan sekadar Ra: kekerasan permukaan dan tegasan baki berubah. Kerosakan ini tidak kelihatan pada alat ukur kekasaran.",
+      "Chip ialah alat ukur suhu percuma. Ajar pelajar membaca warna chip sebelum menyentuh apa-apa alat ukur."],
+   act:"Turunkan Vc, tetapi NAIKKAN fz sedikit — ini yang paling berlawanan dengan naluri pelajar. Periksa aliran coolant benar-benar sampai ke zon potong. Tukar tool yang sudah haus; tool tumpul menjana haba lebih daripada parameter salah."}
+];
+const STAGES = ["Ciri diperhati","Keadaan pemesinan","Mekanisme pembentukan","Kesan pada kekasaran","Makna untuk kerja"];
+
+const PRESETS = [
+  {n:"Aluminium · karbida", vc:250, fz:0.06, z:3},
+  {n:"Keluli lembut · karbida", vc:120, fz:0.05, z:4},
+  {n:"Keluli tahan karat · karbida", vc:70, fz:0.04, z:4},
+  {n:"Keluli lembut · HSS", vc:25, fz:0.03, z:4},
+  {n:"Loyang · karbida", vc:200, fz:0.07, z:3}
+];
+
+/* ---------------- ladder ---------------- */
+const ladderEl = document.getElementById('ladder');
+const ldEl = document.getElementById('ladderDetail');
+let curLv = 0;
+LEVELS.forEach((L,i)=>{
+  const b=document.createElement('button');
+  b.className='rung'; b.setAttribute('role','tab'); b.setAttribute('aria-selected', i===0?'true':'false');
+  b.innerHTML='<div class="lv">'+L.lv+'</div><div class="nm">'+L.nm+'</div><div class="bar"><i style="width:'+L.pct+'%"></i></div>';
+  b.onclick=()=>{curLv=i; renderLadder();};
+  ladderEl.appendChild(b);
+});
+function renderLadder(){
+  [...ladderEl.children].forEach((c,i)=>c.setAttribute('aria-selected', i===curLv?'true':'false'));
+  const L=LEVELS[curLv];
+  ldEl.innerHTML =
+    '<div><span class="eyebrow">'+L.lv+' — apa pelajar boleh buat</span>'+
+    '<h3 class="ld-h" style="margin-top:6px">'+L.nm+'</h3>'+
+    '<ul class="ld-list">'+L.can.map(c=>'<li>'+c+'</li>').join('')+'</ul></div>'+
+    '<div class="evidence"><span class="eyebrow">Bukti penguasaan — syarat naik aras</span><p>'+L.ev+'</p></div>';
+}
+renderLadder();
+
+/* ---------------- phases ---------------- */
+const railEl = document.getElementById('rail');
+const stageEl = document.getElementById('stage');
+const gateCountEl = document.getElementById('gateCount');
+let curPh = 0;
+const checks = PHASES.map(p=>p.gate.map(()=>false));
+
+PHASES.forEach((P,i)=>{
+  const b=document.createElement('button');
+  b.type='button';
+  b.innerHTML='<span class="dot"></span><span><span class="fc">'+P.c+'</span><span class="fn">'+P.nm+'</span></span>';
+  b.onclick=()=>{curPh=i; renderPhase(); };
+  railEl.appendChild(b);
+});
+const railBtns = [...railEl.querySelectorAll('button')];
+
+function gatePassed(i){ return checks[i].every(Boolean); }
+
+function keycaps(arr){
+  return '<div class="keys">'+arr.map(([label,cls])=>{
+    if(cls==='arrow') return '<span class="arrow">'+label+'</span>';
+    return '<kbd class="'+(cls||'')+'">'+label+'</kbd>';
+  }).join('')+'</div>';
+}
+
+function renderPhase(){
+  const P=PHASES[curPh];
+  railBtns.forEach((b,i)=>{
+    b.setAttribute('aria-current', i===curPh?'true':'false');
+    b.classList.toggle('pass', gatePassed(i));
+  });
+  const passed = PHASES.filter((_,i)=>gatePassed(i)).length;
+  gateCountEl.textContent = passed+'/7 lulus';
+
+  const prevOpen = curPh>0 && !gatePassed(curPh-1);
+
+  let steps = '';
+  if(P.steps.length){
+    steps = '<div class="panelboard">'+P.steps.map((s,i)=>{
+      const cap = s.k ? keycaps(s.k) : (s.g ? '<span class="gcode">'+s.g+'</span>' : '');
+      return '<div class="step"><span class="sn">'+String(i+1).padStart(2,'0')+'</span><span class="sbody">'+cap+'<div class="stx">'+s.t+'</div></span></div>';
+    }).join('')+'</div>';
+  } else {
+    steps = '<div class="panelboard"><p class="none">'+P.keysNote+'</p></div>';
+  }
+
+  const gateDone = gatePassed(curPh);
+  const nChecked = checks[curPh].filter(Boolean).length;
+
+  stageEl.innerHTML =
+    '<div class="stage-top"><div><span class="eyebrow">'+P.c+' · '+P.sub+'</span><h3 style="margin-top:5px">'+P.nm+'</h3></div>'+
+    '<div class="meta"><span class="eyebrow">Anggaran masa</span><div class="mono" style="font-size:14px;font-weight:600;margin-top:3px">'+P.t+'</div></div></div>'+
+    '<p class="serif why">'+P.why+'</p>'+
+    (prevOpen ? '<div class="gatewarn"><strong>Gerbang '+PHASES[curPh-1].c+' belum lulus.</strong> Di mesin sebenar, pelajar tidak dibenarkan meneruskan sehingga gerbang sebelumnya ditandatangan.</div>' : '')+
+
+    '<div class="block"><span class="eyebrow">Butang yang ditekan — susunan tepat '+(P.steps.length?'<span class="badge-verify">Sahkan dengan manual</span>':'')+'</span>'+
+      (P.steps.length ? '<p style="font-size:13.2px;color:var(--ink-2);margin:-4px 0 12px">'+P.keysNote+'</p>' : '')+
+      steps+'</div>'+
+
+    '<div class="block"><span class="eyebrow">Gerbang '+P.c+' — mesti lulus sebelum fasa berikut</span>'+
+      '<div class="gate'+(gateDone?' done':'')+'"><div class="gate-h"><span class="eyebrow">Senarai semak</span>'+
+      '<span class="prog">'+nChecked+'/'+P.gate.length+(gateDone?' · LULUS':'')+'</span></div>'+
+      P.gate.map((g,i)=>'<label><input type="checkbox" data-i="'+i+'"'+(checks[curPh][i]?' checked':'')+'><span>'+g+'</span></label>').join('')+
+      '</div></div>'+
+
+    '<div class="block"><span class="eyebrow">Kesilapan yang berlaku di fasa ini</span>'+
+      '<div class="errs">'+P.errs.map((e,i)=>'<div class="err"><span class="ic">'+String(i+1).padStart(2,'0')+'</span><div>'+
+      '<div class="et">'+e.t+'</div><div class="ew">'+e.w+'</div><div class="eg"><b>Pengawal:</b> '+e.g+'</div></div></div>').join('')+'</div></div>'+
+
+    '<div class="navrow">'+
+      '<button type="button" id="pv"'+(curPh===0?' disabled':'')+'>← Fasa sebelum</button>'+
+      '<span class="sp"></span>'+
+      '<button type="button" id="nx" class="primary"'+(curPh===6?' disabled':'')+'>Fasa berikut →</button>'+
+    '</div>';
+
+  stageEl.querySelectorAll('.gate input').forEach(inp=>{
+    inp.onchange = ()=>{ checks[curPh][+inp.dataset.i]=inp.checked; renderPhase(); };
+  });
+  const pv=document.getElementById('pv'), nx=document.getElementById('nx');
+  if(pv) pv.onclick=()=>{curPh--; renderPhase(); stageEl.scrollIntoView({block:'start',behavior:'smooth'});};
+  if(nx) nx.onclick=()=>{curPh++; renderPhase(); stageEl.scrollIntoView({block:'start',behavior:'smooth'});};
+}
+renderPhase();
+
+/* ---------------- calculator ---------------- */
+const presetsEl=document.getElementById('presets');
+PRESETS.forEach((p,i)=>{
+  const b=document.createElement('button'); b.type='button'; b.textContent=p.n;
+  b.setAttribute('aria-pressed', i===1?'true':'false');
+  b.onclick=()=>{
+    [...presetsEl.children].forEach(c=>c.setAttribute('aria-pressed','false'));
+    b.setAttribute('aria-pressed','true');
+    vc.value=p.vc; fz.value=p.fz; z.value=p.z; calc();
+  };
+  presetsEl.appendChild(b);
+});
+const vc=document.getElementById('vc'), dia=document.getElementById('dia'), z=document.getElementById('z'),
+      fz=document.getElementById('fz'), nmax=document.getElementById('nmax'), ae=document.getElementById('ae');
+const rN=document.getElementById('rN'), rF=document.getElementById('rF'), rH=document.getElementById('rH'), flag=document.getElementById('flag');
+
+function calc(){
+  const Vc=+vc.value, D=+dia.value, Z=+z.value, FZ=+fz.value, NM=+nmax.value, AE=+ae.value;
+  if(!(D>0)){ rN.textContent='—'; rF.textContent='—'; return; }
+  let n = 1000*Vc/(Math.PI*D);
+  const capped = n > NM;
+  const nUse = capped ? NM : n;
+  const F = FZ*Z*nUse;
+  const R = D/2;
+  const h = R>0 ? (AE*AE)/(8*R)*1000 : 0;
+  rN.innerHTML = Math.round(nUse).toLocaleString('en-US')+'<u>rpm</u>';
+  rF.innerHTML = Math.round(F).toLocaleString('en-US')+'<u>mm/min</u>';
+  rH.innerHTML = h.toFixed(1)+'<u>µm</u>';
+  if(capped){
+    flag.className='flag bad';
+    flag.innerHTML='Laju yang dikira ialah <b>'+Math.round(n).toLocaleString('en-US')+' rpm</b> — melebihi had mesin. Nilai di atas sudah dihadkan kepada '+NM.toLocaleString('en-US')+' rpm, jadi Vc sebenar turun kepada <b>'+ (Math.PI*D*NM/1000).toFixed(0) +' m/min</b>. Untuk tool sekecil ini, guna tool lebih besar atau terima kemasan yang lebih kasar.';
+  } else if(h>10){
+    flag.className='flag';
+    flag.innerHTML='Tinggi sisa '+h.toFixed(1)+' µm agak besar untuk kemasan akhir. Kecilkan stepover — separuh stepover memberi seperempat tinggi sisa, kerana hubungannya kuasa dua.';
+  } else {
+    flag.className='flag';
+    flag.innerHTML='Suruh pelajar kira ini dengan tangan dahulu, kemudian bandingkan. Yang penting mereka nampak bahawa menukar diameter tool menukar S <em>dan</em> F serentak.';
+  }
+}
+[vc,dia,z,fz,nmax,ae].forEach(el=>el.addEventListener('input',calc));
+calc();
+
+/* ---------------- taxonomy ---------------- */
+document.getElementById('taxo').innerHTML = TAXO.map(t=>
+  '<tr><td class="p">'+t.p+'</td><td class="k">'+t.k+'</td><td>'+t.w+'</td>'+
+  '<td class="g"><b>&rarr;</b> '+t.g+'</td><td><span class="sev '+t.s+'">'+t.sl+'</span></td></tr>').join('');
+
+/* ---------------- rantai diagnosis ---------------- */
+const symrowEl=document.getElementById('symrow'), chainEl=document.getElementById('chain'), actEl=document.getElementById('act');
+let curSym=0;
+SYMPTOMS.forEach((s,i)=>{
+  const b=document.createElement('button'); b.type='button'; b.textContent=s.n;
+  b.setAttribute('aria-pressed', i===0?'true':'false');
+  b.onclick=()=>{curSym=i; renderSym();};
+  symrowEl.appendChild(b);
+});
+function renderSym(){
+  [...symrowEl.children].forEach((c,i)=>c.setAttribute('aria-pressed', i===curSym?'true':'false'));
+  const S=SYMPTOMS[curSym];
+  chainEl.innerHTML = STAGES.map((st,i)=>
+    '<div class="link'+(i===2?' mech':'')+'"><div class="st">'+String(i+1).padStart(2,'0')+' · '+st+'</div>'+
+    '<p>'+S.c[i]+'</p></div>').join('');
+  actEl.innerHTML = '<span class="lbl">Tindakan</span><p>'+S.act+'</p>';
+}
+renderSym();
+
+/* ---------------- mapping ---------------- */
+document.getElementById('map').innerHTML = MAP.map(m=>
+  '<div class="mcell'+(m.off?' off':'')+'"><div class="a">'+m.a+'</div><h4>'+m.h+'</h4><p>'+m.p+'</p><div class="to">'+m.to+'</div></div>').join('');
+
+/* ---------------- kawalan versi fail berdiri sendiri ---------------- */
+(function(){
+  const root = document.documentElement;
+  const LABEL = {auto:'Auto', light:'Cerah', dark:'Gelap'};
+  let mode = 'auto';
+  const tb = document.getElementById('themeBtn');
+  tb.addEventListener('click', function(){
+    mode = mode === 'auto' ? 'light' : mode === 'light' ? 'dark' : 'auto';
+    if(mode === 'auto') root.removeAttribute('data-theme');
+    else root.setAttribute('data-theme', mode);
+    tb.textContent = 'Tema: ' + LABEL[mode];
+  });
+  document.getElementById('resetBtn').addEventListener('click', function(){
+    checks.forEach(function(row){ row.fill(false); });
+    renderPhase();
+  });
+  document.getElementById('printBtn').addEventListener('click', function(){ window.print(); });
+})();
+</script>
+</body>
+</html>

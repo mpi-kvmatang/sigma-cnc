@@ -1,0 +1,22 @@
+# Rahsia — jangan sekali-kali naik ke GitHub
+.env
+.env.local
+*.key
+
+# Data pelajar — repositori ini awam
+*.csv
+*.xlsx
+data/
+eksport/
+
+# Sampah sistem
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+
+# Fail sementara editor
+node_modules/
+.vscode/
+*.swp
+*~
