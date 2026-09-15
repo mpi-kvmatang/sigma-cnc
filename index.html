@@ -79,6 +79,74 @@ a.mod:hover{background:var(--accent-wash)}
 .note p{font-size:13.6px; color:var(--ink-2); text-align:justify; hyphens:auto}
 .note strong{color:var(--ink)}
 
+/* ---------- kalkulator ---------- */
+:root{ --now:#A65E12; --sig:#12795A; }
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --now:#C08525; --sig:#17A17A; } }
+
+.calc{display:grid; grid-template-columns:minmax(260px,1fr) 1.3fr; border:1px solid var(--rule);
+  background:var(--surface); margin-top:18px}
+.calc-in{padding:17px 19px; border-right:1px solid var(--rule)}
+.calc-out{padding:17px 19px; background:var(--sunk); min-width:0}
+.fld{display:grid; grid-template-columns:1fr 84px; gap:10px; align-items:center;
+  padding:7px 0; border-bottom:1px solid var(--rule-soft)}
+.fld:last-child{border-bottom:0}
+.fld .lb{font-size:13.2px; line-height:1.3}
+.fld .lb small{display:block; color:var(--ink-3); font-size:11px; font-family:"IBM Plex Mono",monospace}
+.fld input{font-family:"IBM Plex Mono",monospace; font-size:13.5px; font-weight:500; text-align:right;
+  padding:6px 8px; width:100%; background:var(--surface); color:var(--ink);
+  border:1px solid var(--rule); font-variant-numeric:tabular-nums}
+
+.hero{margin:10px 0 14px; display:flex; align-items:baseline; gap:9px; flex-wrap:wrap}
+.hero span{font-family:"IBM Plex Mono",monospace; font-size:38px; font-weight:600; letter-spacing:-.03em;
+  color:var(--sig); font-variant-numeric:tabular-nums; line-height:1}
+.hero u{text-decoration:none; font-size:12.5px; color:var(--ink-2)}
+
+.legend{display:flex; gap:16px; flex-wrap:wrap; margin-bottom:12px;
+  font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.07em;
+  text-transform:uppercase; color:var(--ink-2)}
+.legend .sw{display:inline-block; width:11px; height:11px; margin-right:6px; vertical-align:-1px}
+.legend .sw.now{background:var(--now)}
+.legend .sw.sig{background:var(--sig)}
+
+.mrow{padding:9px 0; border-top:1px solid var(--rule-soft)}
+.mrow .mt{display:flex; justify-content:space-between; gap:10px; font-size:12.8px; color:var(--ink-2)}
+.mrow .mt b{color:var(--ink); font-weight:600}
+.mrow .mt .cut{font-family:"IBM Plex Mono",monospace; font-weight:600; color:var(--sig)}
+.track{margin-top:6px}
+.bar{height:11px; border-radius:0 3px 3px 0; position:relative; margin-bottom:2px; min-width:2px}
+.bar.now{background:var(--now)}
+.bar.sig{background:var(--sig)}
+.bar span{position:absolute; left:calc(100% + 7px); top:-3px; font-family:"IBM Plex Mono",monospace;
+  font-size:11px; font-weight:600; color:var(--ink-2); white-space:nowrap; font-variant-numeric:tabular-nums}
+.bar.in span{left:auto; right:7px; color:#fff; text-shadow:0 0 2px rgba(0,0,0,.35)}
+.bar.in{height:13px; line-height:13px}
+.bar:hover{filter:brightness(1.12)}
+
+.tbl{margin-top:16px}
+.tbl summary{font-family:"IBM Plex Mono",monospace; font-size:10.5px; font-weight:600; letter-spacing:.09em;
+  text-transform:uppercase; color:var(--ink-3); cursor:pointer; padding:6px 0}
+.tbl table{border-collapse:collapse; width:100%; margin-top:8px}
+.tbl th{font-family:"IBM Plex Mono",monospace; font-size:9.5px; font-weight:600; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--ink-3); text-align:right; padding:5px 0 5px 10px;
+  border-bottom:1px solid var(--ink)}
+.tbl th:first-child{text-align:left; padding-left:0}
+.tbl td{padding:6px 0 6px 10px; border-bottom:1px solid var(--rule-soft); font-size:12.6px;
+  text-align:right; font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; color:var(--ink-2)}
+.tbl td:first-child{text-align:left; padding-left:0; font-family:"Archivo",Arial,sans-serif; color:var(--ink)}
+
+.assump{display:grid; grid-template-columns:auto 1fr; gap:13px; border:1px solid var(--rule);
+  border-left:3px solid var(--accent); background:var(--surface); padding:14px 16px; margin-top:16px}
+.assump .lbl{font-family:"IBM Plex Mono",monospace; font-size:9.5px; font-weight:600; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--accent); padding-top:3px; white-space:nowrap}
+.assump p{font-size:13.2px; color:var(--ink-2); line-height:1.5; text-align:justify; hyphens:auto}
+.assump b{color:var(--ink)}
+
+@media (max-width:700px){
+  .calc{grid-template-columns:1fr}
+  .calc-in{border-right:0; border-bottom:1px solid var(--rule)}
+  .bar span{position:static; display:block; margin-top:2px}
+}
+
 footer{margin-top:48px; padding-top:16px; border-top:1px solid var(--rule);
        color:var(--ink-3); font-size:12.5px; display:flex; gap:18px; flex-wrap:wrap}
 @media (max-width:560px){
@@ -131,6 +199,52 @@ footer{margin-top:48px; padding-top:16px; border-top:1px solid var(--rule);
     </div>
   </div>
 
+  <div class="shead"><span class="n">02</span><h2>Kalkulator pembaziran bengkel</h2></div>
+  <p class="lede" style="margin-top:0">Pembaziran dalam bengkel latihan jarang dikira kerana ia dianggap sebahagian daripada proses belajar. Laraskan angka di bawah mengikut bengkel anda sendiri dan lihat apa yang sebenarnya dibuang setiap tahun — dan berapa yang tinggal jika kadar kesilapan diturunkan.</p>
+
+  <div class="calc">
+    <div class="calc-in">
+      <span class="eyebrow">Keadaan bengkel anda</span>
+      <div class="fld"><span class="lb">Pelajar per semester<small>orang</small></span><input type="number" id="i_pel" value="60" min="1" step="5"></div>
+      <div class="fld"><span class="lb">Sesi amali per pelajar<small>sesi</small></span><input type="number" id="i_ses" value="12" min="1"></div>
+      <div class="fld"><span class="lb">Tool patah per 100 sesi<small>insiden</small></span><input type="number" id="i_tool" value="6" min="0" step="0.5"></div>
+      <div class="fld"><span class="lb">Kos purata mata alat<small>RM</small></span><input type="number" id="i_kos" value="80" min="0" step="5"></div>
+      <div class="fld"><span class="lb">Bahagian pertama gagal<small>%</small></span><input type="number" id="i_rej" value="35" min="0" max="100" step="1"></div>
+      <div class="fld"><span class="lb">Jisim bahan per bahagian<small>kg</small></span><input type="number" id="i_kg" value="0.9" min="0" step="0.1"></div>
+      <div class="fld"><span class="lb">Kos bahan<small>RM / kg</small></span><input type="number" id="i_rmkg" value="25" min="0" step="1"></div>
+      <div class="fld"><span class="lb">Kuasa spindle<small>kW</small></span><input type="number" id="i_kw" value="7.5" min="0" step="0.5"></div>
+      <div class="fld"><span class="lb">Masa kitaran purata<small>minit</small></span><input type="number" id="i_min" value="25" min="1" step="5"></div>
+    </div>
+
+    <div class="calc-out">
+      <span class="eyebrow">Pembaziran setahun &nbsp;·&nbsp; dua semester</span>
+      <div class="hero"><span id="o_jimat">—</span><u>RM terselamat setahun</u></div>
+
+      <div class="legend">
+        <span><i class="sw now"></i>Sekarang</span>
+        <span><i class="sw sig"></i>Dengan SIGMA-CNC</span>
+      </div>
+
+      <div id="bars"></div>
+
+      <details class="tbl">
+        <summary>Lihat jadual angka</summary>
+        <table>
+          <thead><tr><th>Ukuran</th><th>Sekarang</th><th>SIGMA-CNC</th><th>Beza</th></tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </details>
+    </div>
+  </div>
+
+  <div class="assump">
+    <span class="lbl">Andaian</span>
+    <div>
+      <p>Sasaran SIGMA-CNC yang digunakan dalam kiraan: tool patah turun <b>40%</b>, dan kadar gagal bahagian pertama turun <b>20 mata peratusan</b>. Kedua-duanya sasaran, bukan keputusan yang sudah disahkan — data asas sedang dikumpul.</p>
+      <p style="margin-top:8px">Karbon dikira pada <b>0.199 kg CO₂ per kWh</b>, iaitu Faktor Pelepasan Grid Sarawak 2022 terbitan Sarawak Energy melalui Suruhanjaya Tenaga. Perhatikan angka ini: grid Sarawak hampir <b>empat kali lebih bersih</b> daripada Semenanjung (0.774). Maka di bengkel ini, tuas kelestarian yang paling besar bukan tenaga — tetapi <b>bahan</b>: karbida dan aluminium yang tidak pernah menjadi sisa.</p>
+    </div>
+  </div>
+
   <div class="note">
     <p><strong>Nota untuk pensyarah.</strong> Setiap modul ialah satu halaman web tunggal tanpa pemasangan dan tanpa pangkalan data. Ia boleh dibuka pada telefon di sebelah mesin, atau dicetak fasa demi fasa untuk dilaminate dan digantung di bengkel. Urutan butang panel yang khusus kepada pembuat mesin masih perlu disahkan dengan manual mesin sebelum diedarkan kepada pelajar.</p>
   </div>
@@ -140,5 +254,74 @@ footer{margin-top:48px; padding-top:16px; border-top:1px solid var(--rule);
     <span>Draf kerja v2.0</span>
   </footer>
 </div>
+<script>
+(function(){
+  var GEF = 0.199;               // kg CO2 / kWh — Faktor Pelepasan Grid Sarawak 2022
+  var CUT_TOOL = 0.40;           // sasaran: tool patah turun 40%
+  var CUT_REJ  = 20;             // sasaran: kadar gagal turun 20 mata peratusan
+  var ids = ['i_pel','i_ses','i_tool','i_kos','i_rej','i_kg','i_rmkg','i_kw','i_min'];
+  var el = {}; ids.forEach(function(k){ el[k] = document.getElementById(k); });
+
+  function num(x){ var v = parseFloat(x.value); return isFinite(v) && v >= 0 ? v : 0; }
+  function fmt(n, d){ return n.toLocaleString('en-MY', {minimumFractionDigits:d||0, maximumFractionDigits:d||0}); }
+
+  function kira(rejPct, toolFactor){
+    var sesi = num(el.i_pel) * num(el.i_ses) * 2;          // dua semester
+    var tool = sesi * (num(el.i_tool)/100) * toolFactor;
+    var gagal = sesi * (rejPct/100);
+    var kg   = gagal * num(el.i_kg);
+    var kwh  = gagal * (num(el.i_min)/60) * num(el.i_kw);
+    return {
+      tool: tool,
+      kosTool: tool * num(el.i_kos),
+      kg: kg,
+      kosKg: kg * num(el.i_rmkg),
+      kwh: kwh,
+      co2: kwh * GEF
+    };
+  }
+
+  var METRIK = [
+    {k:'tool',    n:'Mata alat patah',      u:'unit', d:0},
+    {k:'kosTool', n:'Kos mata alat',        u:'RM',   d:0},
+    {k:'kg',      n:'Bahan terbuang',       u:'kg',   d:0},
+    {k:'kwh',     n:'Tenaga kerja ulang',   u:'kWh',  d:0},
+    {k:'co2',     n:'Karbon kerja ulang',   u:'kg CO₂', d:0}
+  ];
+
+  function render(){
+    var rejNow = Math.min(100, Math.max(0, num(el.i_rej)));
+    var rejSig = Math.max(5, rejNow - CUT_REJ);
+    var A = kira(rejNow, 1);
+    var B = kira(rejSig, 1 - CUT_TOOL);
+
+    var jimat = (A.kosTool - B.kosTool) + (A.kosKg - B.kosKg);
+    document.getElementById('o_jimat').textContent = fmt(Math.round(jimat));
+
+    var bars = '', rows = '';
+    METRIK.forEach(function(m){
+      var a = A[m.k], b = B[m.k];
+      var max = Math.max(a, b, 1);
+      var pa = Math.max(1.5, a / max * 100), pb = Math.max(1.5, b / max * 100);
+      var beza = a > 0 ? Math.round((1 - b/a) * 100) : 0;
+      var ca = pa > 62 ? ' in' : '', cb = pb > 62 ? ' in' : '';
+      bars += '<div class="mrow"><div class="mt"><b>' + m.n + '</b>'
+            + '<span class="cut">−' + beza + '%</span></div><div class="track">'
+            + '<div class="bar now' + ca + '" style="width:' + pa.toFixed(1) + '%" title="Sekarang: '
+            + fmt(a, m.d) + ' ' + m.u + '"><span>' + fmt(a, m.d) + ' ' + m.u + '</span></div>'
+            + '<div class="bar sig' + cb + '" style="width:' + pb.toFixed(1) + '%" title="Dengan SIGMA-CNC: '
+            + fmt(b, m.d) + ' ' + m.u + '"><span>' + fmt(b, m.d) + ' ' + m.u + '</span></div>'
+            + '</div></div>';
+      rows += '<tr><td>' + m.n + ' (' + m.u + ')</td><td>' + fmt(a, m.d) + '</td><td>'
+            + fmt(b, m.d) + '</td><td>−' + beza + '%</td></tr>';
+    });
+    document.getElementById('bars').innerHTML = bars;
+    document.getElementById('tbody').innerHTML = rows;
+  }
+
+  ids.forEach(function(k){ el[k].addEventListener('input', render); });
+  render();
+})();
+</script>
 </body>
 </html>
