@@ -1,9 +1,11 @@
-# CNC HUB OS Matang
+# SIGMA-CNC · Modul Milling
+
+**SI**stem **G**erbang **M**esin **A**mali — Program MPI, Kolej Vokasional Matang
 
 Sistem panduan latihan CNC Milling untuk bengkel Kolej Vokasional Matang.
 Satu halaman web tunggal, tiada pemasangan, tiada pangkalan data.
 
-**Laman langsung:** https://NAMA-GITHUB-ANDA.github.io/cnc-hub-os/
+**Laman langsung:** https://mpi-kvmatang.github.io/sigma-cnc/milling/
 
 ---
 
@@ -35,7 +37,7 @@ tiga paksi dengan kawalan FANUC Series 0i-MF Plus.
 Buka pautan laman langsung di atas dalam mana-mana pelayar — telefon,
 tablet atau komputer bengkel. Tiada pemasangan diperlukan.
 
-Untuk membukanya tanpa internet, muat turun `index.html` dan klik dua kali.
+Untuk membukanya tanpa internet, muat turun `milling/index.html` dan klik dua kali.
 Halaman berfungsi sepenuhnya secara luar talian; hanya jenis tulisan
 bertukar kepada tulisan lalai sistem.
 
@@ -53,14 +55,14 @@ lulus. Setiap sesi bermula bersih.
 
 ## Status
 
-Draf kerja v1.2. Urutan kekunci skrin FANUC sudah disahkan. Butang pada panel
+Draf kerja v2.0. Urutan kekunci skrin FANUC sudah disahkan. Butang pada panel
 sebelah mesin (pemilih mod, cycle start, feed hold, handwheel) masih bertanda
 "Sahkan" kerana ia datang daripada pembuat mesin, bukan FANUC — padankan dengan
 manual mesin sebelum diedarkan kepada pelajar.
 
 ## Mengubah kandungan
 
-Semua kandungan berada dalam blok `<script>` di hujung `index.html`, sebagai
+Semua kandungan berada dalam blok `<script>` di hujung `milling/index.html`, sebagai
 enam array:
 
 | Array | Kandungan |
