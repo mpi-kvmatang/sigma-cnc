@@ -433,7 +433,7 @@ a.up:hover{text-decoration:underline; text-underline-offset:3px}
   <div class="mast-in">
     <div>
       <div class="eyebrow" style="margin-bottom:9px"><a class="up" href="../">&#8592; SIGMA</a> &nbsp;·&nbsp; Program MPI &nbsp;&middot;&nbsp; Kolej Vokasional Matang &nbsp;·&nbsp; CNC Milling 3-Axis</div>
-      <h1>SIGMA-CNC <span class="dim">v2.1</span></h1>
+      <h1>SIGMA-CNC <span class="dim">v2.2</span></h1>
       <p class="expand">Sistem Gerbang Mesin Amali</p>
       <p class="sub">Satu laluan tetap dari tidak tahu apa-apa hingga boleh menyediakan mesin sendiri. Setiap fasa ada gerbang pemeriksaan yang mesti lulus sebelum fasa berikut — itulah yang menghalang kesilapan, bukan ingatan pelajar.</p>
       <div class="tools">
@@ -485,7 +485,7 @@ a.up:hover{text-decoration:underline; text-underline-offset:3px}
     <span class="lbl">Penemuan</span>
     <div>
       <h4>Peringkat 03 tiada borang — dan di situlah empat daripada enam kesilapan kritikal berlaku</h4>
-      <p>Rujuk taksonomi di seksyen 05: Z sifar diambil di meja, nombor H tidak sepadan dengan T, homing X sebelum Z, dan bendakerja tidak diketatkan. Keempat-empatnya berlaku semasa setup mesin — satu-satunya peringkat yang tiada rekod, tiada semakan, dan tiada tandatangan. Pre-Run Checklist diisi selepas itu, jadi pelajar menanda "work offset betul" untuk kerja yang sudah pun selesai tanpa disaksikan sesiapa. Inilah lubang yang SIGMA-CNC tutup, dan inilah hujah paling kuat untuk penghantaran tajuk anda.</p>
+      <p>Rujuk taksonomi di seksyen 05: Z sifar diambil di meja, nombor H tidak sepadan dengan T, homing X sebelum Z, dan bendakerja tidak diketatkan. Keempat-empatnya berlaku semasa setup mesin — satu-satunya peringkat yang tiada rekod, tiada semakan, dan tiada tandatangan. Pre-Run Checklist diisi selepas itu, jadi pelajar menanda "work offset betul" untuk kerja yang sudah pun selesai tanpa disaksikan sesiapa. Inilah lubang yang SIGMA-CNC tutup, dan menjadi fokus panduan setup dalam sistem ini.</p>
     </div>
   </div>
 
@@ -550,55 +550,32 @@ a.up:hover{text-decoration:underline; text-underline-offset:3px}
 
 <section>
   <div class="shead"><span class="n">06</span><h2>Rantai sebab-akibat — cara berfikir bila permukaan tak menjadi</h2><span class="note">Modul aras L5</span></div>
-  <p class="serif" style=" margin-bottom:18px">Ini satu-satunya bahagian HUB OS yang benar-benar datang daripada buku Master Prompt. Di sebalik arahan menulis kertas, pengarang menulis rantai sebab-akibat pemesinan secara terang: <span class="mono" style="font-size:12.5px">Ciri Diperhati → Keadaan Pemesinan → Mekanisme Pembentukan → Kesan pada Kekasaran → Makna untuk Kerja</span>. Dia menulisnya supaya AI tidak melompat terus kepada kesimpulan. Rantai yang sama, tanpa diubah, ialah cara seorang jurumesin berpengalaman mendiagnos permukaan yang rosak — dan itulah yang membezakan pelajar aras L5 daripada pelajar yang hanya menukar suapan secara rambang sehingga ia nampak elok.</p>
+  <p class="serif" style="margin-bottom:18px">Pilih gejala yang diperhatikan untuk meneliti kemungkinan punca, kesan dan tindakan semakan. Rekod bukti pada bendakerja dan rujuk pensyarah sebelum mengubah tetapan mesin.</p>
   <div class="symrow" id="symrow"></div>
   <div class="chain" id="chain"></div>
   <div class="act" id="act"></div>
 
-  <p class="eyebrow" style="display:block; margin:26px 0 0">Empat disiplin daripada buku yang boleh dipindahkan terus kepada pelajar</p>
   <div class="disc">
-    <div><p class="q">[INFORMATION REQUIRED]</p><p class="t">Buku melarang AI meneka parameter atau sifat bahan; kalau tidak tahu, tulis penanda ini. Pindahkan ke borang persediaan pelajar: tulis <em>[MAKLUMAT DIPERLUKAN]</em> pada ruangan bahan atau jejari tool, jangan isi dengan tekaan. Ruangan kosong yang jujur lebih selamat daripada nombor yang direka.</p></div>
-    <div><p class="q">Ketepatan statistik ≠ kebenaran fizikal</p><p class="t">Buku: jangan samakan R² tinggi dengan model yang betul dari segi fizik. Versi bengkel: bahagian yang masuk toleransi tidak bermakna proses itu betul — ia mungkin betul secara kebetulan, dan keping seterusnya akan gagal.</p></div>
-    <div><p class="q">Korelasi bukan sebab</p><p class="t">Buku: jangan simpulkan sebab-akibat hanya daripada korelasi. Versi bengkel: kalau pelajar tukar suapan <em>dan</em> kelajuan serentak lalu permukaan bertambah baik, mereka belum belajar apa-apa. Satu pemboleh ubah pada satu masa.</p></div>
-    <div><p class="q">Jangan diagnos tanpa bukti</p><p class="t">Buku: jangan isytihar chatter tanpa bukti sokongan. Versi bengkel: "rasa macam chatter" bukan diagnosis. Tunjuk coraknya pada permukaan, atau rakam bunyinya, sebelum menukar apa-apa tetapan.</p></div>
+    <div><p class="q">Sahkan maklumat</p><p class="t">Jika bahan atau parameter belum diketahui, tandakan “Perlu semakan” dan rujuk pensyarah.</p></div>
+    <div><p class="q">Rekod bukti</p><p class="t">Catat ukuran, keadaan permukaan dan gejala yang diperhatikan sebelum membuat diagnosis.</p></div>
+    <div><p class="q">Ubah secara terkawal</p><p class="t">Dengan kelulusan pensyarah, ubah satu pemboleh ubah pada satu masa dan rekod hasilnya.</p></div>
+    <div><p class="q">Sahkan semula</p><p class="t">Bandingkan hasil dengan toleransi lukisan dan dapatkan pengesahan pensyarah.</p></div>
   </div>
 </section>
-
-<section>
-  <div class="shead"><span class="n">07</span><h2>Apa yang buku Master Prompt A1–A12 boleh sumbang</h2><span class="note">Dan apa yang tidak</span></div>
-  <p class="serif" style=" margin-bottom:10px">Buku penuh 271 muka surat sudah dibaca. Perlu dinyatakan dengan jelas: <strong>ia tidak mengandungi satu pun jadual parameter, nilai laju pemotongan, prosedur mesin, atau persamaan bernilai.</strong> Setiap arketaip ialah arahan kepada AI tentang cara menulis kertas daripada data yang <em>pengguna</em> bekalkan — malah setiap bab ada seksyen "NO FABRICATION" yang melarang AI mereka-reka parameter dan sifat bahan, yang bermakna buku itu sendiri tidak membekalkan apa-apa nilai. Pelajar tidak boleh belajar mengendalikan mesin daripadanya.</p>
-  <p class="serif" style=" margin-bottom:18px">Satu lagi corak yang ketara: <strong>sebelas daripada dua belas arketaip berkisar tentang kekasaran permukaan.</strong> Itu bidang kepakaran pengarang, bukan skop latihan vokasional — ia tidak menyentuh ketepatan dimensi, penyediaan mesin, pengaturcaraan, atau keselamatan, iaitu majoriti apa yang pelajar KV perlukan. Yang benar-benar boleh dipindahkan ialah rantai penaakulan di seksyen 05 di atas. Ini pemetaan penuh dua belas arketaip.</p>
-  <div class="map" id="map"></div>
-</section>
-
-<section>
-  <div class="shead"><span class="n">08</span><h2>Bagaimana keberkesanan akan dibuktikan</h2><span class="note">Rangka bukti sebelum–selepas</span></div>
-  <p class="serif" style=" margin-bottom:18px">Tiga borang Google itu sudah menghasilkan Sheets setiap kali pelajar menghantar. Sepanjang satu semester, itu bukan rekod pentadbiran — itu dataset. Panel penilai tidak menilai sistem yang nampak kemas; mereka menilai sistem yang boleh menunjukkan nombor sebelum dan selepas. Berikut metrik yang boleh diambil terus daripada borang sedia ada, tanpa perlu alat tambahan.</p>
-  <div class="tablewrap"><table>
-    <thead><tr><th>Metrik</th><th>Sumber data</th><th>Cara dikira</th><th>Sasaran</th></tr></thead>
-    <tbody>
-      <tr><td class="k">Bilangan langgar &amp; tool patah</td><td>Log insiden bengkel + rekod stor</td><td>Kiraan kejadian per semester per mesin</td><td>Bandingkan dengan baseline</td></tr>
-      <tr><td class="k">Kadar lulus bahagian pertama</td><td>Borang 1, bahagian keputusan</td><td>(bahagian pertama menepati toleransi ÷ jumlah cubaan) × 100</td><td>Bandingkan dengan baseline</td></tr>
-      <tr><td class="k">Item checklist paling kerap gagal</td><td>Borang 2 → Sheets</td><td>Kekerapan setiap item ditanda gagal, disusun menurun</td><td>Kenal pasti 5 teratas untuk latihan sasaran</td></tr>
-      <tr><td class="k">Job Card ditolak pada pusingan pertama</td><td>Borang 1 dan Borang 3</td><td>Nisbah ditolak berbanding dihantar</td><td>Bandingkan dengan baseline</td></tr>
-      <tr><td class="k">Masa setup purata</td><td>Cap masa setup sebenar</td><td>Masa mula hingga setup disahkan; asingkan masa menunggu</td><td>Bandingkan dengan baseline</td></tr>
-      <tr><td class="k">Pelajar naik aras L2 ke L3</td><td>Rekod pensyarah</td><td>Peratus kohort yang boleh setup tanpa dibantu</td><td>80% dalam satu semester</td></tr>
-      <tr><td class="k">Kos mata alat rosak</td><td>Rekod pengeluaran stor</td><td>RM per semester per kelas</td><td>Turun 40%</td></tr>
-    </tbody>
-  </table></div>
-
-  <div class="warnbox">
-    <span class="lbl">Risiko</span>
-    <div>
-      <h4>Tanpa baseline, tiada satu pun nombor di atas bermakna</h4>
-      <p>Ini risiko terbesar projek, dan ia perlu diselesaikan sebelum pelaksanaan bermula — bukan selepas. Kalau sistem dilancarkan dahulu dan baru terfikir hendak mengukur, angka "sebelum" hilang selama-lamanya dan inovasi tidak boleh dibuktikan, hanya boleh didakwa. Kumpul baseline dalam dua minggu pertama: rekod stor tool tiga semester lepas, kiraan insiden daripada log bengkel, dan satu sesi bersama keempat-empat pensyarah untuk menganggarkan kadar lulus bahagian pertama semasa. Anggaran pensyarah yang direkodkan bertarikh lebih baik daripada tiada baseline langsung.</p>
-    </div>
+<section id="selesai-latihan">
+  <div class="shead"><span class="n">07</span><h2>Selesai latihan — semak, sahkan dan rekod</h2><span class="note">Penutup sesi amali</span></div>
+  <div class="disc">
+    <div><p class="q">01 · Semak gerbang</p><p class="t">Pastikan semua senarai semak dilengkapkan berdasarkan kerja sebenar. Item yang belum dipenuhi perlu disemak bersama pensyarah.</p><a href="#jalan-selamat">Semak tujuh fasa →</a></div>
+    <div><p class="q">02 · Dapatkan pengesahan</p><p class="t">Tunjukkan bendakerja dan bacaan ukuran kepada pensyarah. Catat pembetulan yang diperlukan sebelum kerja seterusnya.</p></div>
+    <div><p class="q">03 · Lengkapkan rekod amali</p><p class="t">Lengkapkan rekod yang ditetapkan pensyarah, termasuk ukuran, isu dan tindakan pembetulan. Gunakan pautan borang di bahagian aliran kerja.</p></div>
+    <div><p class="q">04 · Serahkan ruang kerja</p><p class="t">Lengkapkan penutupan mesin mengikut prosedur bengkel, pulangkan alat dan laporkan sebarang kerosakan kepada pensyarah.</p></div>
   </div>
+  <p style="margin-top:20px"><a href="impak.html">Impak &amp; Penilaian · panduan pensyarah dan juri →</a></p>
 </section>
 
 <footer>
   <span>SIGMA-CNC Matang · versi pertandingan SIIC 1.0</span>
-  <span>Semak manual mesin dan rekod baseline sebelum amali</span>
+  <span>Latihan berpandu · pengesahan pensyarah · rekod amali</span>
 </footer>
 </div>
 
@@ -789,17 +766,6 @@ const TAXO = [
   {p:"F5", k:"Datum diambil di sudut bertentangan", w:"Bahagian keluar bercermin; mesin berjalan sempurna jadi tiada amaran", g:"Tanda datum dilukis pada bendakerja sebelum dipasang", s:"w", sl:"Tinggi"},
   {p:"F7", k:"GEOMETRY dilaras untuk betulkan saiz", w:"Rekod panjang tool tercemar; setup seterusnya bermula salah", g:"Lajur geometry dikunci untuk pelajar di bawah L3", s:"w", sl:"Tinggi"},
   {p:"F6", k:"MACHINE LOCK tertinggal hidup", w:"Program berjalan tanpa memotong; pelajar keliru dan menukar benda lain", g:"Homing semula wajib selepas machine lock dimatikan", s:"l", sl:"Sederhana"}
-];
-
-const MAP = [
-  {a:"A4", h:"Mechanism-Based Surface Roughness Modeling", p:"Sumbangan terbesar, dan bukan promptnya — rantai fizikalnya. Seksyen 7, 9 dan 11 menulis dengan jelas: parameter → gerakan tool → sentuhan → ubah bentuk bahan → tinggi sisa → morfologi → kekasaran; dan progresi menggosok → membajak → memotong. Itu asas modul diagnosis di seksyen 05.", to:"→ L5 · rantai diagnosis", off:false},
-  {a:"A7", h:"Chatter, Vibration &amp; Smart CNC Monitoring", p:"Menyenaraikan fenomena dinamik pemesinan satu per satu: chatter regeneratif, getaran paksa, runout tool, pesongan, pemotongan terputus-putus. Untuk mesin sekolah yang kurang tegar, chatter ialah aduan nombor satu — senarai ini jadi rangka kad diagnosis getaran.", to:"→ L5 · kad chatter", off:false},
-  {a:"A2", h:"Parameter Optimization &amp; Statistical Analysis", p:"Konsepnya sahaja yang berguna: parameter tidak diteka, ia diuji secara berstruktur. Turunkan jadi bengkel 9 keping — tiga paras suapan × tiga paras kelajuan, ukur Ra setiap satu, plot kesan. Tiada statistik lanjutan diperlukan.", to:"→ L6 · eksperimen bengkel", off:false},
-  {a:"A12", h:"Tool Path, Tool Geometry &amp; Surface Roughness", p:"Rantai geometri tool → parameter → kinematik → permukaan. Ini menyokong soalan L4 yang pelajar selalu tanya tetapi jarang dijawab: kenapa stepover penting, kenapa jejari hujung tool mengubah kemasan, kenapa arah masuk toolpath mengubah burr.", to:"→ L4 · kalkulator parameter", off:false},
-  {a:"A3 / A6", h:"Surface Integrity &amp; Sustainable Machining", p:"A3 menyentuh kehausan tool dan integriti permukaan — bahan untuk modul 'bila tukar mata'. A6 tentang pemesinan lestari: penggunaan bahan penyejuk, tenaga, sisa. Yang kedua itu sesuai jadi projek L6 di kolej, bukan kandungan teras.", to:"→ L5–L6 · modul sokongan", off:false},
-  {a:"A1 · A5 · A8 · A9 · A10 · A11", h:"Sensor, ML, multi-sensor fusion, Digital Twin, daya pemotongan", p:"Enam arketaip memerlukan dinamometer, akselerometer, sistem DAQ dan latihan model — tiada satu pun praktikal di KV Matang. Tetapi ideanya boleh diturunkan sepenuhnya: manusia juga sistem berbilang sensor. Bunyi, warna chip, getaran di vise, bau bahan panas. Empat saluran, percuma.", to:"→ L5 · deria sebagai sensor", off:true},
-  {a:"—", h:"Yang sengaja ditinggalkan", p:"Semua prompt penjanaan abstrak, kajian literatur, metodologi, validasi statistik dan kesimpulan kertas — iaitu majoriti 271 muka surat itu. Ia untuk penyelidik yang menulis untuk jurnal. Membawanya masuk akan menjadikan modul kelihatan canggih tetapi tidak mengubah apa-apa di lantai bengkel.", to:"→ Tidak dimasukkan", off:true},
-  {a:"✓", h:"Di mana buku ini benar-benar berguna kepada anda", p:"Bukan untuk pelajar — untuk pensyarah. Kalau mana-mana pensyarah KV Matang sedang membuat sarjana atau menulis kertas persidangan tentang pemesinan, buku ini memang alat yang betul untuk kerja itu. Cuma jangan silap letak: ia alat penulisan penyelidikan, bukan alat latihan vokasional.", to:"→ Pembangunan staf", off:true}
 ];
 
 const SYMPTOMS = [
@@ -1040,10 +1006,6 @@ function renderSym(){
   actEl.innerHTML = '<span class="lbl">Tindakan</span><p>'+S.act+'</p>';
 }
 renderSym();
-
-/* ---------------- mapping ---------------- */
-document.getElementById('map').innerHTML = MAP.map(m=>
-  '<div class="mcell'+(m.off?' off':'')+'"><div class="a">'+m.a+'</div><h4>'+m.h+'</h4><p>'+m.p+'</p><div class="to">'+m.to+'</div></div>').join('');
 
 /* ---------------- kawalan versi fail berdiri sendiri ---------------- */
 (function(){
