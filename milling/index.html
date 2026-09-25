@@ -213,6 +213,11 @@ kbd.soft{background:transparent; color:#B9C0C8; border-color:#4b535b; border-bot
 .audit .metric{padding:10px 12px;border-left:3px solid var(--accent)}
 .audit .metric strong{display:block;font-size:15px;margin-top:4px}
 .audit .metric small{color:var(--ink-2);font-size:12px;line-height:1.45}
+.record-entry{margin:20px 0 0;padding:22px;border:1px solid var(--accent);background:var(--accent-wash);display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.record-entry h2{font-size:22px;margin:5px 0 7px}
+.record-entry p{color:var(--ink-2);max-width:740px;font-size:13.5px}
+.record-entry a{display:inline-block;padding:11px 16px;background:var(--ink);color:var(--surface);text-decoration:none;font-weight:700;white-space:nowrap}
+.record-entry a:hover{text-decoration:underline}
 .shake{outline:2px solid var(--stop);outline-offset:3px}
 @media(max-width:700px){.audit{grid-template-columns:1fr}.audit .metric{border-left:0;border-top:3px solid var(--accent)}}
 
@@ -433,7 +438,7 @@ a.up:hover{text-decoration:underline; text-underline-offset:3px}
   <div class="mast-in">
     <div>
       <div class="eyebrow" style="margin-bottom:9px"><a class="up" href="../">&#8592; SIGMA</a> &nbsp;·&nbsp; Program MPI &nbsp;&middot;&nbsp; Kolej Vokasional Matang &nbsp;·&nbsp; CNC Milling 3-Axis</div>
-      <h1>SIGMA-CNC <span class="dim">v2.3</span></h1>
+      <h1>SIGMA-CNC <span class="dim">v2.4</span></h1>
       <p class="expand">Sistem Gerbang Mesin Amali</p>
       <p class="sub">Satu laluan tetap dari tidak tahu apa-apa hingga boleh menyediakan mesin sendiri. Setiap fasa ada gerbang pemeriksaan yang mesti lulus sebelum fasa berikut — itulah yang menghalang kesilapan, bukan ingatan pelajar.</p>
       <div class="tools">
@@ -460,14 +465,18 @@ a.up:hover{text-decoration:underline; text-underline-offset:3px}
   <div class="metric"><span class="eyebrow">Keselamatan</span><strong>Semakan pensyarah sebelum mesin</strong><small>Paparan web membimbing; keputusan operasi kekal pada pensyarah dan manual mesin.</small></div>
   <div class="metric"><span class="eyebrow">Impak yang diukur</span><strong>Insiden · first-off · scrap · masa setup</strong><small>Gunakan rekod borang dan log bengkel untuk perbandingan sebelum–selepas.</small></div>
 </div>
+<div class="record-entry">
+  <div><span class="eyebrow">Rekod sesi amali</span><h2>Satu Kerja, Satu ID, Satu Rekod</h2><p>Mulakan satu ID kerja, ikuti pautan borang, catat bukti setup dan ukuran first-off, kemudian eksport rekod sesi. Rujukan borang ditambah secara manual kerana Google Forms belum disambung secara automatik. Tanda semak dalam panduan latihan tidak disimpan bersama Rekod Kerja.</p></div>
+  <a href="rekod.html">Buka Rekod Kerja →</a>
+</div>
 
 <section>
   <div class="shead"><span class="n">01</span><h2>Aliran Kerja Bengkel: Peranan SIGMA-CNC</h2><span class="note">Tiga borang, lima peringkat</span></div>
-  <p class="serif" style=" margin-bottom:18px">Aliran sedia ada KV Matang sudah betul strukturnya: pelajar mengisi Job Card, pensyarah menyemak dan meluluskan, pelajar mengesahkan melalui Pre-Run Checklist, barulah mesin dihidupkan. SIGMA-CNC bukan borang keempat — ia lapisan yang membuat ketiga-tiga borang itu berfungsi, dengan memberi pelajar <em>cara memikirkan</em> apa yang mereka tulis dan tanda.</p>
+  <p class="serif" style=" margin-bottom:18px">Mulakan kerja dalam <a href="rekod.html">Rekod Kerja</a> untuk mendapatkan satu ID sesi. Gunakan ID yang sama semasa mengisi Job Card, mendapatkan kelulusan dan melengkapkan Pre-Run Checklist. Halaman rekod mengumpulkan rujukan borang, bukti setup dan ukuran first-off untuk semakan pensyarah.</p>
   <div class="flow">
     <div class="fstage"><div class="fno">01</div><div class="who">Pelajar</div><h4>Sedia</h4><p>Baca lukisan, pilih tool, kira S dan F, tetapkan datum di atas kertas.</p><a class="frm" href="https://docs.google.com/forms/d/e/1FAIpQLSf4l2yep1VzKBMdoksPi00BuXfoPUZ8r1ClAsthkzhXaeZv2Q/viewform" target="_blank" rel="noopener">Job Card CNC Milling <span class="ext">&#8599;</span></a></div>
     <div class="fstage"><div class="fno">02</div><div class="who">Pensyarah</div><h4>Semakan dan Pengesahan</h4><p>Sahkan parameter munasabah untuk bahan, datum jelas, senarai tool lengkap. Lulus atau pulangkan.</p><a class="frm" href="https://docs.google.com/forms/d/e/1FAIpQLSdgScLFEmAgtjF0ZSmJGTaNGPClfFpl4yibLl62yj7EPG_FuQ/viewform" target="_blank" rel="noopener">Approval Task <span class="ext">&#8599;</span></a></div>
-    <div class="fstage gap"><div class="fno">03</div><div class="who">Pelajar</div><h4>Setup mesin</h4><p>Homing, pasang bendakerja, tool length offset, work offset G54. Di sinilah kerja sebenar berlaku — dan tiada borang merekodkannya.</p><div class="jumpwrap"><a class="jump" href="#jalan-selamat">Buka Jalan Selamat F2&ndash;F5 <span class="ext">&#8595;</span></a></div></div>
+    <div class="fstage gap"><div class="fno">03</div><div class="who">Pelajar</div><h4>Setup mesin</h4><p>Homing, pasang bendakerja, tool length offset dan work offset G54. Catat bukti F2–F5 dalam Rekod Kerja.</p><div class="jumpwrap"><a class="jump" href="#jalan-selamat">Buka Jalan Selamat F2&ndash;F5 <span class="ext">&#8595;</span></a></div></div>
     <div class="fstage"><div class="fno">04</div><div class="who">Pelajar</div><h4>Semakan Keselamatan</h4><p>Machine lock, dry run, single block, rapid 25%. Semak laluan sebelum logam disentuh.</p><a class="frm" href="https://docs.google.com/forms/d/e/1FAIpQLSewtqaCTUAP0GKooNLgPCs2Q4YeReLSdI1YtFdIf1ZT_ogkeg/viewform" target="_blank" rel="noopener">Pre-Run Safety Checklist CNC Milling <span class="ext">&#8599;</span></a></div>
     <div class="fstage"><div class="fno">05</div><div class="who">Pelajar</div><h4>Potong</h4><p>Cycle start dengan feed override rendah, tangan di feed hold. Ukur bahagian pertama.</p><div class="frm">—</div></div>
   </div>
@@ -479,20 +488,20 @@ a.up:hover{text-decoration:underline; text-underline-offset:3px}
     <div class="hubcell on">F6 · urutan pengesahan berperingkat</div>
     <div class="hubcell on">F7 · first-off, wear offset</div>
   </div>
-  <p class="caption-note" style="font-size:12.7px; color:var(--ink-3); margin-top:11px">Label borang berwarna di atas ialah pautan — tekan untuk membuka borang Google berkenaan dalam tab baharu, tanpa kehilangan halaman ini; borang memerlukan log masuk akaun kolej anda. Peringkat 03 tiada borang, jadi butangnya membawa terus ke fasa F2&ndash;F5 di seksyen 03 halaman ini.</p>
+  <p class="caption-note" style="font-size:12.7px; color:var(--ink-3); margin-top:11px">Pautan borang membuka Google Forms dalam tab baharu dan mungkin memerlukan log masuk akaun kolej. Salin ID daripada Rekod Kerja ke dalam borang jika ada ruangan yang sesuai, kemudian catat rujukan penghantaran dalam Rekod Kerja. Padanan respons borang belum automatik.</p>
 
   <div class="warnbox">
     <span class="lbl">Penemuan</span>
     <div>
-      <h4>Peringkat 03 tiada borang — dan di situlah empat daripada enam kesilapan kritikal berlaku</h4>
-      <p>Rujuk taksonomi di seksyen 05: Z sifar diambil di meja, nombor H tidak sepadan dengan T, homing X sebelum Z, dan bendakerja tidak diketatkan. Keempat-empatnya berlaku semasa setup mesin — satu-satunya peringkat yang tiada rekod, tiada semakan, dan tiada tandatangan. Pre-Run Checklist diisi selepas itu, jadi pelajar menanda "work offset betul" untuk kerja yang sudah pun selesai tanpa disaksikan sesiapa. Inilah lubang yang SIGMA-CNC tutup, dan menjadi fokus panduan setup dalam sistem ini.</p>
+      <h4>Setup F2–F5 memerlukan bukti yang boleh disemak</h4>
+      <p>Rujuk taksonomi di seksyen 05: Z sifar diambil di meja, nombor H tidak sepadan dengan T, homing X sebelum Z, dan bendakerja tidak diketatkan. Keempat-empatnya berkait dengan setup mesin. Rekod Kerja kini menyediakan ruang catatan untuk bukti dan pembetulan setiap fasa, sebelum Pre-Run Checklist dihantar. Pensyarah masih perlu memeriksa kerja sebenar di bengkel.</p>
     </div>
   </div>
 
   <div class="claim">
     <div><div class="h">Masalah</div><h4>Kesilapan bukan kerana pelajar tidak tahu</h4><p>Mereka tahu semasa di kelas, tetapi terlupa pada saat mesin sudah hidup dan rakan sedang menunggu giliran. Latihan tambahan tidak menyelesaikan masalah ingatan di bawah tekanan.</p></div>
     <div><div class="h">Inovasi</div><h4>Pindahkan beban dari ingatan kepada prosedur bergerbang</h4><p>Setiap fasa ada gerbang yang mesti lulus sebelum fasa berikut, dan penjelasan "kenapa" muncul pada saat ia diperlukan — bukan tiga minggu lebih awal di dalam kelas teori.</p></div>
-    <div><div class="h">Kebaruan</div><h4>Bukan halaman web, tetapi susunan</h4><p>Job card dan checklist wujud di mana-mana. Yang baharu ialah gabungan gerbang berturutan, panduan butang khusus mesin pada titik guna, dan data borang yang menutup gelung sebagai bukti keberkesanan.</p></div>
+    <div><div class="h">Kebaruan</div><h4>Satu perjalanan kerja yang boleh dijejak</h4><p>Gerbang berturutan, panduan panel pada titik guna dan satu ID sesi menghubungkan rujukan borang, bukti setup serta ukuran first-off. Pensyarah boleh menyemak rekod yang dieksport bersama bukti asal.</p></div>
   </div>
 </section>
 
