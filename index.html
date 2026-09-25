@@ -55,6 +55,15 @@ a{color:var(--accent)}
   font-family:"Source Serif 4",Georgia,serif; font-size:16px; line-height:1.62; color:var(--ink-2);
   margin-top:14px; text-align:justify; hyphens:auto;
 }
+.entry-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.entry-actions a{display:inline-block;padding:11px 16px;background:var(--ink);color:var(--surface);font-weight:700;text-decoration:none;font-size:13px}
+.entry-actions a.secondary{background:transparent;color:var(--ink);border:1px solid var(--rule)}
+.entry-actions a:hover{text-decoration:underline}
+.path{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--rule);background:var(--surface);margin-top:22px}
+.path div{padding:13px 15px;border-right:1px solid var(--rule-soft)}
+.path div:last-child{border-right:0}
+.path b{display:block;font-size:13px}.path small{display:block;color:var(--ink-2);margin-top:4px;font-size:12px}
+.future{padding:13px 17px;background:var(--surface-2);border:1px solid var(--rule);border-top:0;color:var(--ink-2);font-size:12.5px}
 
 .shead{display:flex; align-items:baseline; gap:13px; border-bottom:1px solid var(--ink); padding-bottom:8px; margin:44px 0 18px}
 .shead .n{font-family:"IBM Plex Mono",monospace; font-size:12px; font-weight:600; color:var(--accent)}
@@ -145,6 +154,7 @@ a.mod:hover{background:var(--accent-wash)}
   .calc{grid-template-columns:1fr}
   .calc-in{border-right:0; border-bottom:1px solid var(--rule)}
   .bar span{position:static; display:block; margin-top:2px}
+  .path{grid-template-columns:1fr}.path div{border-right:0;border-bottom:1px solid var(--rule-soft)}.path div:last-child{border-bottom:0}
 }
 
 footer{margin-top:48px; padding-top:16px; border-top:1px solid var(--rule);
@@ -163,48 +173,38 @@ footer{margin-top:48px; padding-top:16px; border-top:1px solid var(--rule);
     <span class="eyebrow">Program MPI &nbsp;·&nbsp; Kolej Vokasional Matang</span>
     <h1>SIGMA</h1>
     <p class="expand">Sistem Gerbang Mesin Amali</p>
-    <p class="lede">Satu rangka latihan bengkel yang memindahkan beban daripada ingatan pelajar kepada prosedur bergerbang. Setiap fasa kerja ada gerbang pemeriksaan yang mesti lulus sebelum fasa berikut dibenarkan. Halaman ini menyenaraikan modul mesin yang sudah dibangunkan di bawah rangka tersebut.</p>
+    <p class="lede">SIGMA membimbing latihan CNC Milling melalui tujuh gerbang keselamatan dan satu rekod kerja ber-ID. Pelajar mengikuti panduan mesin, mencatat rujukan borang serta bukti setup dan ukuran first-off; pensyarah menyemak kerja sebenar sebelum mesin digunakan.</p>
+    <div class="entry-actions"><a href="milling/rekod.html">Mulakan / Sambung Rekod Kerja →</a><a class="secondary" href="milling/">Lihat panduan CNC Milling →</a></div>
   </div>
 </div>
 
 <div class="wrap">
-  <div class="shead"><span class="n">01</span><h2>Modul mesin</h2></div>
+  <div class="path" aria-label="Laluan penggunaan SIGMA">
+    <div><b>01 · Cipta satu ID</b><small>Mulakan sesi di Rekod Kerja sebelum membuka borang.</small></div>
+    <div><b>02 · Ikuti tujuh gerbang</b><small>Rujuk panduan CNC Milling dan dapatkan semakan pensyarah.</small></div>
+    <div><b>03 · Simpan bukti</b><small>Catat rujukan borang, setup dan first-off pada ID yang sama.</small></div>
+  </div>
+  <div class="shead"><span class="n">01</span><h2>Modul tersedia</h2></div>
 
   <div class="mods">
     <a class="mod" href="milling/">
       <span class="code">M-01</span>
       <span>
         <h3>CNC Milling</h3>
-        <p>VMC tiga paksi, kawalan FANUC Series 0i-MF Plus. Tujuh fasa, tujuh gerbang, tangga kompetensi L0 hingga L6.</p>
+        <p>VMC tiga paksi dengan kawalan FANUC Series 0i-MF Plus. Tujuh fasa, tujuh gerbang dan tangga kompetensi L0–L6.</p>
       </span>
       <span class="go">Buka</span>
     </a>
 
-    <div class="mod soon">
-      <span class="code">M-02</span>
-      <span>
-        <h3>CNC Lathe</h3>
-        <p>Belum dibangunkan. Rangka gerbang yang sama akan digunakan, dengan urutan setup dan taksonomi kesilapan khusus mesin larik.</p>
-      </span>
-      <span class="go">Akan datang</span>
-    </div>
-
-    <div class="mod soon">
-      <span class="code">M-03</span>
-      <span>
-        <h3>Bengkel lain</h3>
-        <p>Rangka SIGMA tidak terikat kepada CNC. Mana-mana bengkel yang mempunyai urutan kerja berisiko boleh menggunakan struktur gerbang yang sama.</p>
-      </span>
-      <span class="go">Akan datang</span>
-    </div>
   </div>
+  <div class="future"><strong>Potensi pengembangan:</strong> rangka gerbang ini boleh disesuaikan untuk CNC Lathe dan bengkel lain. Modul tersebut belum dibangunkan atau diuji.</div>
 
   <div class="shead"><span class="n">02</span><h2>Kalkulator pembaziran bengkel</h2></div>
-  <p class="lede" style="margin-top:0">Pembaziran dalam bengkel latihan jarang dikira kerana ia dianggap sebahagian daripada proses belajar. Laraskan angka di bawah mengikut bengkel anda sendiri dan lihat apa yang sebenarnya dibuang setiap tahun — dan berapa yang tinggal jika kadar kesilapan diturunkan.</p>
+  <p class="lede" style="margin-top:0">Simulasi ini menganggarkan potensi pembaziran dan penjimatan menggunakan angka contoh. Gantikan input dengan data bengkel sebenar untuk membina garis asas; hasil di bawah belum membuktikan impak SIGMA-CNC.</p>
 
   <div class="calc">
     <div class="calc-in">
-      <span class="eyebrow">Keadaan bengkel anda</span>
+      <span class="eyebrow">Input contoh · laraskan dengan data bengkel</span>
       <div class="fld"><span class="lb">Pelajar per semester<small>orang</small></span><input type="number" id="i_pel" value="60" min="1" step="5"></div>
       <div class="fld"><span class="lb">Sesi amali per pelajar<small>sesi</small></span><input type="number" id="i_ses" value="12" min="1"></div>
       <div class="fld"><span class="lb">Tool patah per 100 sesi<small>insiden</small></span><input type="number" id="i_tool" value="6" min="0" step="0.5"></div>
@@ -217,12 +217,12 @@ footer{margin-top:48px; padding-top:16px; border-top:1px solid var(--rule);
     </div>
 
     <div class="calc-out">
-      <span class="eyebrow">Pembaziran setahun &nbsp;·&nbsp; dua semester</span>
-      <div class="hero"><span id="o_jimat">—</span><u>RM terselamat setahun</u></div>
+      <span class="eyebrow">Unjuran setahun &nbsp;·&nbsp; dua semester</span>
+      <div class="hero"><span id="o_jimat">—</span><u>RM potensi penjimatan setahun · senario, belum disahkan</u></div>
 
       <div class="legend">
-        <span><i class="sw now"></i>Sekarang</span>
-        <span><i class="sw sig"></i>Dengan SIGMA-CNC</span>
+        <span><i class="sw now"></i>Senario asas</span>
+        <span><i class="sw sig"></i>Senario sasaran</span>
       </div>
 
       <div id="bars"></div>
@@ -230,7 +230,7 @@ footer{margin-top:48px; padding-top:16px; border-top:1px solid var(--rule);
       <details class="tbl">
         <summary>Lihat jadual angka</summary>
         <table>
-          <thead><tr><th>Ukuran</th><th>Sekarang</th><th>SIGMA-CNC</th><th>Beza</th></tr></thead>
+          <thead><tr><th>Ukuran</th><th>Asas</th><th>Sasaran</th><th>Beza</th></tr></thead>
           <tbody id="tbody"></tbody>
         </table>
       </details>
@@ -240,18 +240,18 @@ footer{margin-top:48px; padding-top:16px; border-top:1px solid var(--rule);
   <div class="assump">
     <span class="lbl">Andaian</span>
     <div>
-      <p>Sasaran SIGMA-CNC yang digunakan dalam kiraan: tool patah turun <b>40%</b>, dan kadar gagal bahagian pertama turun <b>20 mata peratusan</b>. Kedua-duanya sasaran, bukan keputusan yang sudah disahkan — data asas sedang dikumpul.</p>
-      <p style="margin-top:8px">Karbon dikira pada <b>0.199 kg CO₂ per kWh</b>, iaitu Faktor Pelepasan Grid Sarawak 2022 terbitan Sarawak Energy melalui Suruhanjaya Tenaga. Perhatikan angka ini: grid Sarawak hampir <b>empat kali lebih bersih</b> daripada Semenanjung (0.774). Maka di bengkel ini, tuas kelestarian yang paling besar bukan tenaga — tetapi <b>bahan</b>: karbida dan aluminium yang tidak pernah menjadi sisa.</p>
+      <p>Senario sasaran mengandaikan tool patah turun <b>40%</b> dan kadar gagal bahagian pertama turun sehingga <b>20 mata peratusan</b> (tidak di bawah sifar). Nilai asal pada input ialah contoh, bukan data KV Matang yang disahkan. Kos hanya merangkumi mata alat dan bahan kerja ulang; tidak termasuk buruh, penyelenggaraan atau pelupusan.</p>
+      <p style="margin-top:8px">Anggaran tenaga mengandaikan setiap bahagian pertama yang gagal diulang selama satu masa kitaran pada kuasa spindle yang dimasukkan. Karbon menggunakan faktor contoh <b>0.199 kg CO₂/kWh</b>; semak faktor semasa sebelum menggunakan angka ini dalam laporan rasmi. Lihat <a href="milling/impak.html">rangka pengukuran impak</a> untuk mengumpul bukti sebenar.</p>
     </div>
   </div>
 
   <div class="note">
-    <p><strong>Nota untuk pensyarah.</strong> Setiap modul ialah satu halaman web tunggal tanpa pemasangan dan tanpa pangkalan data. Ia boleh dibuka pada telefon di sebelah mesin, atau dicetak fasa demi fasa untuk dilaminate dan digantung di bengkel. Urutan butang panel yang khusus kepada pembuat mesin masih perlu disahkan dengan manual mesin sebelum diedarkan kepada pelajar.</p>
+    <p><strong>Nota untuk pensyarah.</strong> Panduan mesin dan Rekod Kerja boleh dibuka dalam pelayar tanpa pemasangan. Rekod disimpan pada pelayar peranti yang digunakan, bukan pangkalan data pusat; rujukan Google Forms dimasukkan secara manual. Semak kerja serta manual mesin sebenar sebelum sesi amali.</p>
   </div>
 
   <footer>
     <span>SIGMA · Program MPI, Kolej Vokasional Matang</span>
-    <span>Draf kerja v2.0</span>
+    <span>SIGMA-CNC v2.4 · SIIC 1.0 2026</span>
   </footer>
 </div>
 <script>
@@ -291,7 +291,7 @@ footer{margin-top:48px; padding-top:16px; border-top:1px solid var(--rule);
 
   function render(){
     var rejNow = Math.min(100, Math.max(0, num(el.i_rej)));
-    var rejSig = Math.max(5, rejNow - CUT_REJ);
+    var rejSig = Math.max(0, rejNow - CUT_REJ);
     var A = kira(rejNow, 1);
     var B = kira(rejSig, 1 - CUT_TOOL);
 
@@ -307,9 +307,9 @@ footer{margin-top:48px; padding-top:16px; border-top:1px solid var(--rule);
       var ca = pa > 62 ? ' in' : '', cb = pb > 62 ? ' in' : '';
       bars += '<div class="mrow"><div class="mt"><b>' + m.n + '</b>'
             + '<span class="cut">−' + beza + '%</span></div><div class="track">'
-            + '<div class="bar now' + ca + '" style="width:' + pa.toFixed(1) + '%" title="Sekarang: '
+            + '<div class="bar now' + ca + '" style="width:' + pa.toFixed(1) + '%" title="Senario asas: '
             + fmt(a, m.d) + ' ' + m.u + '"><span>' + fmt(a, m.d) + ' ' + m.u + '</span></div>'
-            + '<div class="bar sig' + cb + '" style="width:' + pb.toFixed(1) + '%" title="Dengan SIGMA-CNC: '
+            + '<div class="bar sig' + cb + '" style="width:' + pb.toFixed(1) + '%" title="Senario sasaran: '
             + fmt(b, m.d) + ' ' + m.u + '"><span>' + fmt(b, m.d) + ' ' + m.u + '</span></div>'
             + '</div></div>';
       rows += '<tr><td>' + m.n + ' (' + m.u + ')</td><td>' + fmt(a, m.d) + '</td><td>'
