@@ -304,16 +304,17 @@ footer{margin-top:48px; padding-top:16px; border-top:1px solid var(--rule);
       var max = Math.max(a, b, 1);
       var pa = Math.max(1.5, a / max * 100), pb = Math.max(1.5, b / max * 100);
       var beza = a > 0 ? Math.round((1 - b/a) * 100) : 0;
+      var bezaLabel = beza === 0 ? '0%' : '−' + beza + '%';
       var ca = pa > 62 ? ' in' : '', cb = pb > 62 ? ' in' : '';
       bars += '<div class="mrow"><div class="mt"><b>' + m.n + '</b>'
-            + '<span class="cut">−' + beza + '%</span></div><div class="track">'
+            + '<span class="cut">' + bezaLabel + '</span></div><div class="track">'
             + '<div class="bar now' + ca + '" style="width:' + pa.toFixed(1) + '%" title="Senario asas: '
             + fmt(a, m.d) + ' ' + m.u + '"><span>' + fmt(a, m.d) + ' ' + m.u + '</span></div>'
             + '<div class="bar sig' + cb + '" style="width:' + pb.toFixed(1) + '%" title="Senario sasaran: '
             + fmt(b, m.d) + ' ' + m.u + '"><span>' + fmt(b, m.d) + ' ' + m.u + '</span></div>'
             + '</div></div>';
       rows += '<tr><td>' + m.n + ' (' + m.u + ')</td><td>' + fmt(a, m.d) + '</td><td>'
-            + fmt(b, m.d) + '</td><td>−' + beza + '%</td></tr>';
+            + fmt(b, m.d) + '</td><td>' + bezaLabel + '</td></tr>';
     });
     document.getElementById('bars').innerHTML = bars;
     document.getElementById('tbody').innerHTML = rows;
